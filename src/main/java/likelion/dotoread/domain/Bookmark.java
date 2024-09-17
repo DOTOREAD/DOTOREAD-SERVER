@@ -3,11 +3,15 @@ package likelion.dotoread.domain;
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
 import likelion.dotoread.domain.enums.Rating;
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Bookmark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

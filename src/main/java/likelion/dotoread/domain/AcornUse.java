@@ -2,10 +2,15 @@ package likelion.dotoread.domain;
 
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class AcornUse extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

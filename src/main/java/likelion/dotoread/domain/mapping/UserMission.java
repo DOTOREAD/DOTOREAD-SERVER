@@ -5,11 +5,15 @@ import likelion.dotoread.domain.AcornAdd;
 import likelion.dotoread.domain.Mission;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.domain.common.BaseEntity;
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UserMission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

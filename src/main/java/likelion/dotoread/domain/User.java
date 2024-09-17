@@ -3,12 +3,16 @@ package likelion.dotoread.domain;
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
 import likelion.dotoread.domain.mapping.UserMission;
-import lombok.Builder;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
