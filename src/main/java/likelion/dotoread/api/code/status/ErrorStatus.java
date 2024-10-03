@@ -16,7 +16,14 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
-    EXCEPTION_TEST(HttpStatus.BAD_REQUEST, "TEST4001", "에러 테스트"),
+    //OAUTH
+    _ACCESS_NOT_FOUND(HttpStatus.NOT_FOUND, "OAUTH4001", "Access Token이 없습니다."),
+    _REFRESH_NOT_FOUND(HttpStatus.NOT_FOUND, "OAUTH4002", "Refresh Token이 없습니다."),
+    _ACCESS_INVALID(HttpStatus.BAD_REQUEST, "OAUTH4003", "Access Token이 유효하지 않습니다."),
+    _REFRESH_INVALID(HttpStatus.BAD_REQUEST,"OAUTH4004", "Refresh Token이 유효하지 않습니다."),
+    _ACCESS_EXPIRED(HttpStatus.BAD_REQUEST,"OAUTH4005", "Access Token이 만료되었습니다"),
+    _REFRESH_EXPIRED(HttpStatus.BAD_REQUEST,"OAUTH4006", "Refresh Token이 만료되었습니다"),
+
 
     ;
     private final HttpStatus httpStatus;
