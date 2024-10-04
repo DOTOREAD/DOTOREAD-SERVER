@@ -5,22 +5,33 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-    public SwaggerConfig() {
-    }
 
     @Bean
-    public OpenAPI stewAPI() {
-        Info info = (new Info()).title("DOTOREAD API").description("DOTOREAD API 명세서").version("1.0.0");
-        String jwtSchemeName = "JWT TOKEN";
-        SecurityRequirement securityRequirement = (new SecurityRequirement()).addList(jwtSchemeName);
-        Components components = (new Components()).addSecuritySchemes(jwtSchemeName, (new SecurityScheme()).name(jwtSchemeName).type(Type.HTTP).scheme("bearer").bearerFormat("JWT"));
-        return (new OpenAPI()).addServersItem((new Server()).url("/")).info(info).addSecurityItem(securityRequirement).components(components);
+    public OpenAPI dotoreadAPI() {
+        Info info = new Info()
+                .title("DOTOREAD API")
+                .description("DOTOREAD API 명세서")
+                .version("1.0.0");
+
+        String securitySchemeName = "access";
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(securitySchemeName);
+
+        Components components = new Components()
+                .addSecuritySchemes(securitySchemeName, new SecurityScheme()
+                        .name(securitySchemeName)
+                        .type(SecurityScheme.Type.APIKEY)
+                        .in(SecurityScheme.In.HEADER));
+
+        return new OpenAPI()
+                .addServersItem(new Server().url("/"))
+                .info(info)
+                .addSecurityItem(securityRequirement)
+                .components(components);
     }
 }
