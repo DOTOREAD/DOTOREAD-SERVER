@@ -3,7 +3,10 @@ name: Deploy To EC2
 on:
   push:
     branches:
-      - ci/#8
+      - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   deploy:
