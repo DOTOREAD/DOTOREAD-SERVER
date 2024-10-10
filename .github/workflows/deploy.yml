@@ -1,12 +1,9 @@
 name: Deploy To EC2
 
 on:
-  #push:
-    #branches:
-     # - develop
-  pull_request:
+  push:
     branches:
-      - develop
+      - ci/#8
 
 jobs:
   deploy:
