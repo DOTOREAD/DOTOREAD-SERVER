@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +15,10 @@ import java.util.stream.Collectors;
 @Service
 public class CrawlerService {
 
-    public WebDriver setupDriver() {
-        // 환경 변수에서 chromedriver 경로를 가져옴
-        String chromeDriverPath = System.getenv("CHROMEDRIVER_PATH");
-        if (chromeDriverPath == null || chromeDriverPath.isEmpty()) {
-            throw new RuntimeException("CHROMEDRIVER_PATH 환경 변수가 설정되지 않았습니다.");
-        }
+    @Value("${chromedriver.path:/usr/bin/chromedriver}")
+    private String chromeDriverPath;
 
+    public WebDriver setupDriver() {
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");

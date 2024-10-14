@@ -1,0 +1,13 @@
+version: '3'
+services:
+  spring-server:
+    image: 474668395121.dkr.ecr.ap-northeast-2.amazonaws.com/dotoread:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+  python-server:
+    build: ./DOTOREAD-NLP
+    ports:
+      - "5001:5001"

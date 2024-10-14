@@ -39,6 +39,7 @@ jobs:
       - name: ECR에 로그인하기
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+
       - name: Docker 이미지 생성
         run: docker build -t dotoread .
 
@@ -48,15 +49,22 @@ jobs:
       - name: ECR에 Docker 이미지 Push하기
         run: docker push ${{ steps.login-ecr.outputs.registry }}/dotoread:latest
 
-      - name: 압축하기
-        run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
+      - name: 파이썬 서버 파일 준비
+        run: |
+          mkdir -p DOTOREAD-NLP
+          cp DOTOREAD-NLP/app.py DOTOREAD-NLP/requirements.txt DOTOREAD-NLP/Dockerfile DOTOREAD-NLP/stopwords.txt DOTOREAD-NLP/
+          cp docker-compose.yml .
 
-      - name: S3에 프로젝트 폴더 업로드하기
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://dotoread/$GITHUB_SHA.tar.gz
+      - name: 배포 파일 압축
+        run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts docker-compose.yml DOTOREAD-NLP
 
-      - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
-        run: aws deploy create-deployment
-          --application-name dotoread
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name Production
-          --s3-location bucket=dotoread,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+      - name: S3에 배포 파일 업로드
+        run: aws s3 cp $GITHUB_SHA.tar.gz s3://dotoread/$GITHUB_SHA.tar.gz
+
+      - name: CodeDeploy로 배포 실행
+        run: |
+          aws deploy create-deployment \
+            --application-name dotoread \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name Production \
+            --s3-location bucket=dotoread,key=$GITHUB_SHA.tar.gz,bundleType=tgz
