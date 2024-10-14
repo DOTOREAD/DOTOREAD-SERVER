@@ -12,4 +12,5 @@ ENV CHROME_BIN=/usr/bin/chromium-browser \
 COPY ./build/libs/*SNAPSHOT.jar project.jar
 
 # 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "project.jar"]
+#ENTRYPOINT ["java", "-jar", "project.jar"]
+CMD ["java", "-jar", "project.jar"]
