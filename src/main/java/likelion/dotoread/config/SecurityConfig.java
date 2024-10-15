@@ -92,6 +92,7 @@ public class SecurityConfig {
                 );
 
         //경로별 인가 작업
+        //TODO : 테스트를 위해 permitAll() 해둔 것들 수정 필요!
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/reissue").permitAll()
