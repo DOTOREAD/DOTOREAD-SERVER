@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//TODO : 사용하지 않을 예정, 추후 삭제
 @Service
 public class CrawlerService {
 
