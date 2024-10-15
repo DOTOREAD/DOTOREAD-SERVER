@@ -49,13 +49,11 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://localhost:8081"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                         configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+                        configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
                         configuration.setMaxAge(3600L);
-
-                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
 
                         return configuration;
