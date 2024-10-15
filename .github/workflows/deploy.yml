@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir ./src/main/resources
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+
       - name: 테스트 및 빌드하기
         run: ./gradlew clean build
 
