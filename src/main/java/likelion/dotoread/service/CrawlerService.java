@@ -35,7 +35,7 @@ public class CrawlerService {
         WebDriver driver = setupDriver();
         try {
             driver.get(url);
-            Thread.sleep(5000);  // 페이지 로딩 대기
+            Thread.sleep(2000);  // 페이지 로딩 대기
 
             // 모든 텍스트를 크롤링
             List<WebElement> elements = driver.findElements(By.tagName("body"));  // body 전체의 텍스트 가져오기
