@@ -10,7 +10,6 @@ import likelion.dotoread.auth.oauth2.service.CustomOAuth2UserService;
 import likelion.dotoread.repository.RefreshRepository;
 import likelion.dotoread.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,8 +36,6 @@ public class SecurityConfig {
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
     private final RefreshRepository refreshRepository;
     private final ObjectMapper objectMapper;
-    @Value("${flask.server.url}")
-    private String FLASK_SERVER_URL;
     //AuthenticationManager Bean 등록
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,12 +48,14 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://localhost:8081", FLASK_SERVER_URL));
-                        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://localhost:8081"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-                        configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
 
                         return configuration;
@@ -93,7 +92,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/reissue").permitAll()
-                        .requestMatchers("/swagger-ui/**","/error","/swagger-resources/**","/v3/api-docs/**","/health", "/test").permitAll()
+                        .requestMatchers("/swagger-ui/**","/error","/swagger-resources/**","/v3/api-docs/**","/health").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
