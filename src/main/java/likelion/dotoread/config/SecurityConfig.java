@@ -10,6 +10,7 @@ import likelion.dotoread.auth.oauth2.service.CustomOAuth2UserService;
 import likelion.dotoread.repository.RefreshRepository;
 import likelion.dotoread.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,6 +37,8 @@ public class SecurityConfig {
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
     private final RefreshRepository refreshRepository;
     private final ObjectMapper objectMapper;
+    @Value("${spring.server.url}")
+    private String SPRING_SERVER_URL;
     //AuthenticationManager Bean 등록
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +51,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://localhost:8081"));
+                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "http://localhost:8081", SPRING_SERVER_URL));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
