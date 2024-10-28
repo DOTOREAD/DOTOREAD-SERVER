@@ -36,9 +36,9 @@ public class BookmarkController {
     }
 
     @Operation(summary = "북마크 삭제", description = "북마크를 삭제할 수 있습니다.")
-    @DeleteMapping("/{bookmarkId}")
-    public ResponseEntity<Void> deleteBookmark(@PathVariable Long bookmarkId) {
-        bookmarkService.deleteBookmark(bookmarkId);
+    @DeleteMapping("/{bookmarkIds}")
+    public ResponseEntity<Void> deleteBookmark(@PathVariable List<Long> bookmarkIds) {
+        bookmarkIds.forEach(bookmarkService::deleteBookmark);
         return ResponseEntity.noContent().build();
     }
 }
