@@ -3,11 +3,10 @@ package likelion.dotoread.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
-import likelion.dotoread.domain.Bookmark;
+import likelion.dotoread.enums.SortType;
 import likelion.dotoread.request.SaveBookmarkRequest;
+import likelion.dotoread.response.BookmarkDetailResponse;
 import likelion.dotoread.service.BookmarkService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +22,21 @@ public class BookmarkController {
 
     public BookmarkController(BookmarkService bookmarkService) {
         this.bookmarkService = bookmarkService;
+    }
+
+    @Operation(summary = "북마크 정보 가져오기", description = "하나의 북마크 정보를 가져옵니다.")
+    @GetMapping("/{bookmarkId}")
+    public ApiResponse<BookmarkDetailResponse> getBookmarkDetail(@PathVariable Long bookmarkId){
+        BookmarkDetailResponse bookmarkDetail = bookmarkService.getBookmarkDetail(bookmarkId);
+        return ApiResponse.onSuccess(bookmarkDetail);
+    }
+
+    @Operation(summary = "북마크 리스트 가져오기(모든 북마크)", description = "사용자의 모든 북마크를 가져옵니다.")
+    @GetMapping("/all/{userId}")
+    public ApiResponse<List<BookmarkDetailResponse>> getAllBookmarks(@PathVariable Long userId,
+                                                                     @RequestParam(defaultValue = "DESC") SortType sortType){
+        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getAllBookmarks(userId, sortType);
+        return ApiResponse.onSuccess(bookmarkDetail);
     }
 
     @Operation(summary = "북마크 추가", description = "북마크를 추가할 수 있습니다.")
@@ -41,4 +55,5 @@ public class BookmarkController {
         bookmarkIds.forEach(bookmarkService::deleteBookmark);
         return ResponseEntity.noContent().build();
     }
+
 }
