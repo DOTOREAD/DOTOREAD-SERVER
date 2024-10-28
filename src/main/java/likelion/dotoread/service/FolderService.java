@@ -1,8 +1,5 @@
 package likelion.dotoread.service;
 
-import likelion.dotoread.api.code.status.ErrorStatus;
-import likelion.dotoread.api.exception.GeneralException;
-import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
@@ -20,11 +17,16 @@ public class FolderService {
         this.folderRepository = folderRepository;
     }
 
-    public Long saveFolder(SaveFolderRequest saveFolderRequest){
+    //후에 자동분류에서의 폴더 생성을 위한 구조 개선
+    public Long saveFolder(SaveFolderRequest saveFolderRequest) {
+        return saveFolder(saveFolderRequest.name());
+    }
+
+    public Long saveFolder(String folderName) {
         Folder folder = Folder.builder()
-                .name(saveFolderRequest.name())
+                .name(folderName)
                 .build();
-        Folder savedFolder= folderRepository.save(folder);
+        Folder savedFolder = folderRepository.save(folder);
         return savedFolder.getId();
     }
 }
