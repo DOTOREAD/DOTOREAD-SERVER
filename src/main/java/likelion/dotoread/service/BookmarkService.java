@@ -12,6 +12,7 @@ import likelion.dotoread.response.BookmarkDetailResponse;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -61,6 +62,15 @@ public class BookmarkService {
 
         Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(userId, sort);
+        return BookmarkDetailResponse.from(bookmarks);
+    }
+
+    public List<BookmarkDetailResponse> getUncategorizedBookmarks(Long userId, SortType sortType) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+
+        Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderIsNull(userId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
 }

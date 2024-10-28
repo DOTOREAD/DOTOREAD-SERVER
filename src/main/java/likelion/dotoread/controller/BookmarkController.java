@@ -39,6 +39,14 @@ public class BookmarkController {
         return ApiResponse.onSuccess(bookmarkDetail);
     }
 
+    @Operation(summary = "북마크 리스트 가져오기(분류 X)", description = "사용자의 분류되지 않은 모든 북마크를 가져옵니다.")
+    @GetMapping("/uncategorized/{userId}")
+    public ApiResponse<List<BookmarkDetailResponse>> getUncategorizedBookmarks(@PathVariable Long userId,
+                                                                     @RequestParam(defaultValue = "DESC") SortType sortType){
+        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getUncategorizedBookmarks(userId, sortType);
+        return ApiResponse.onSuccess(bookmarkDetail);
+    }
+
     @Operation(summary = "북마크 추가", description = "북마크를 추가할 수 있습니다.")
     @PostMapping
     public ResponseEntity<Void> saveBookmark(

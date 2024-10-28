@@ -9,4 +9,5 @@ import java.util.List;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     List<Bookmark> findAllByUserId(Long userId, Sort sort);
+    List<Bookmark> findAllByUserIdAndFolderIsNull(Long userId, Sort sort);
 }
