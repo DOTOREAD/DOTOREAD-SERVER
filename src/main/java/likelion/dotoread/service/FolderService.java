@@ -1,5 +1,7 @@
 package likelion.dotoread.service;
 
+import likelion.dotoread.api.code.status.ErrorStatus;
+import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
@@ -28,5 +30,11 @@ public class FolderService {
                 .build();
         Folder savedFolder = folderRepository.save(folder);
         return savedFolder.getId();
+    }
+
+    public void deleteFolder(Long folderId) {
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._FOLDER_NOT_FOUND));
+        folderRepository.delete(folder);
     }
 }

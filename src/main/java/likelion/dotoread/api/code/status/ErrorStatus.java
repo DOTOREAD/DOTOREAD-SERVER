@@ -26,9 +26,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //NOTFOUND
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "User not found."),
-    _BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOKMARK404", "Bookmark not found.")
-
-    ;
+    _BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOKMARK404", "Bookmark not found."),
+    _FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLDER404", "Folder not found.");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

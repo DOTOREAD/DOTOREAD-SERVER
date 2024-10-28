@@ -2,14 +2,10 @@ package likelion.dotoread.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import likelion.dotoread.request.SaveBookmarkRequest;
 import likelion.dotoread.request.SaveFolderRequest;
 import likelion.dotoread.service.FolderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -24,7 +20,7 @@ public class FolderController {
         this.folderService = folderService;
     }
 
-    @Operation(summary = "폴더 생성하기", description = "폴더를 생성합니다.")
+    @Operation(summary = "폴더 생성하기", description = "폴더를 생성할 수 있습니다.")
     @PostMapping
     public ResponseEntity<Void> saveFolder(
             @RequestBody @Valid SaveFolderRequest saveFolderRequest
@@ -32,5 +28,12 @@ public class FolderController {
         Long folderId = folderService.saveFolder(saveFolderRequest);
         URI location = URI.create(BASE_URI + folderId);
         return ResponseEntity.created(location).build();
+    }
+
+    @Operation(summary = "폴더 삭제하기", description = "폴더를 삭제할 수 있습니다.")
+    @DeleteMapping("/{folderId}")
+    public ResponseEntity<Void> deleteBookmark(@PathVariable Long folderId) {
+        folderService.deleteFolder(folderId);
+        return ResponseEntity.noContent().build();
     }
 }
