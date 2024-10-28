@@ -48,6 +48,11 @@ public class BookmarkService {
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
 
+        bookmark.setVisitedAt(LocalDateTime.now());
+        bookmark.setIsVisited(true);
+
+        bookmarkRepository.save(bookmark);
+
         return BookmarkDetailResponse.of(
                 bookmark.getId(),
                 bookmark.getName(),
