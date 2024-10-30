@@ -16,6 +16,9 @@ public enum SuccessStatus implements BaseCode {
     _SIGN_UP_OK(HttpStatus.OK,"OAUTH2003", "회원가입이 완료되었습니다."),
     _LOGOUT_OK(HttpStatus.OK,"OAUTH2004","로그아웃이 완료되었습니다."),
 
+    //폴더 (키워드 추출)
+    _KEYWORD_OK(HttpStatus.OK, "FOLDER2001", "키워드 추출이 완료되었습니다."),
+
     ;
     private final HttpStatus httpStatus;
     private final String code;
