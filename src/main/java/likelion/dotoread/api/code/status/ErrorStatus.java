@@ -24,8 +24,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _ACCESS_EXPIRED(HttpStatus.BAD_REQUEST,"OAUTH4005", "Access Token이 만료되었습니다"),
     _REFRESH_EXPIRED(HttpStatus.BAD_REQUEST,"OAUTH4006", "Refresh Token이 만료되었습니다"),
 
-
-    ;
+    //NOTFOUND
+    _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "User not found."),
+    _BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOKMARK404", "Bookmark not found."),
+    _FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLDER404", "Folder not found.");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
