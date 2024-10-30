@@ -17,7 +17,7 @@ public class Bookmark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String title;
     private String url;
     private String img;
     private String memo;
