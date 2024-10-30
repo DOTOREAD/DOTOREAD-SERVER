@@ -31,7 +31,7 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
-    String flaskUrl = "http://3.38.2.223:5001/title"; //TODO:환경 파일에 넣어놓기
+    String flaskUrl = "http://3.38.2.223:5001"; //TODO:환경 파일에 넣어놓기
 
     public BookmarkService(BookmarkRepository bookmarkRepository, UserRepository userRepository) {
         this.bookmarkRepository = bookmarkRepository;
@@ -50,11 +50,34 @@ public class BookmarkService {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(
-                    flaskUrl, HttpMethod.POST, entity, String.class);
+                    flaskUrl+"/title", HttpMethod.POST, entity, String.class);
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(response.getBody());
             return rootNode.path("title").asText();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String crawlImage(String url){
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("url", url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    flaskUrl+"/images", HttpMethod.POST, entity, String.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(response.getBody());
+            return rootNode.path("image_url").asText();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -72,11 +95,13 @@ public class BookmarkService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
         String title = crawlTitle(request.url());
+        String img = crawlImage(request.url());
 
         Bookmark bookmark = Bookmark.builder()
                 .url(request.url())
-                .user(user)
                 .title(title)
+                .img(img)
+                .user(user)
                 .build();
         Bookmark savedBookmark = bookmarkRepository.save(bookmark);
         return savedBookmark.getId();
@@ -95,6 +120,7 @@ public class BookmarkService {
                 bookmark.getId(),
                 bookmark.getTitle(),
                 bookmark.getUrl(),
+                bookmark.getImg(),
                 bookmark.getCreatedAt()
         );
     }
