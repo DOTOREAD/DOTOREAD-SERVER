@@ -121,7 +121,8 @@ public class BookmarkService {
                 bookmark.getTitle(),
                 bookmark.getUrl(),
                 bookmark.getImg(),
-                bookmark.getCreatedAt()
+                bookmark.getCreatedAt(),
+                bookmark.getFolder()
         );
     }
 

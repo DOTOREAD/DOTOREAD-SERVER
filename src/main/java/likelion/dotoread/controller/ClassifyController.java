@@ -1,0 +1,36 @@
+package likelion.dotoread.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import likelion.dotoread.api.ApiResponse;
+import likelion.dotoread.request.AIClassifyRequest;
+import likelion.dotoread.response.BookmarkDetailResponse;
+import likelion.dotoread.service.BookmarkService;
+import likelion.dotoread.service.ClassifyService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("api/v1/classify")
+public class ClassifyController {
+
+    private final BookmarkService bookmarkService;
+    private final ClassifyService classifyService;
+    private static final String BASE_URI = "/api/v1/classify/";
+
+    public ClassifyController(BookmarkService bookmarkService, ClassifyService classifyService) {
+        this.bookmarkService = bookmarkService;
+        this.classifyService = classifyService;
+    }
+
+    @Operation(summary = "북마크 ai 분류하기", description = "북마크를 ai 분류합니다.")
+    @PostMapping("/ai")
+    public ApiResponse<List<BookmarkDetailResponse>> AIClassify(@RequestBody @Valid AIClassifyRequest aiClassifyRequest){
+        List<BookmarkDetailResponse> classifiedBookmarks = classifyService.AIClassify(aiClassifyRequest);
+        return ApiResponse.onSuccess(classifiedBookmarks);
+    }
+}
