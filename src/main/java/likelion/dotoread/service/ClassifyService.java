@@ -9,7 +9,7 @@ import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.repository.BookmarkRepository;
 import likelion.dotoread.repository.UserRepository;
-import likelion.dotoread.request.AIClassifyRequest;
+import likelion.dotoread.request.ClassifyRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -34,14 +34,14 @@ public class ClassifyService {
         this.userRepository = userRepository;
     }
 
-    public List<BookmarkDetailResponse> AIClassify(AIClassifyRequest aiClassifyRequest) {
-        return aiClassifyRequest.bookmarkIds().stream()
+    public List<BookmarkDetailResponse> AIClassify(ClassifyRequest classifyRequest) {
+        return classifyRequest.bookmarkIds().stream()
                 .map(bookmarkId -> {
                     Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                             .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
                     String topic = callAIClassify(bookmarkId);
                     if (topic != null) { // 폴더가 존재하지 않으면 생성하고 존재하면 바로 저장
-                        Folder folder = checkAndCreateFolder(topic, aiClassifyRequest.userId());
+                        Folder folder = checkAndCreateFolder(topic, classifyRequest.userId());
 
                         bookmark.setFolder(folder);
                         bookmarkRepository.save(bookmark);
@@ -89,5 +89,9 @@ public class ClassifyService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
         return folderService.findOrCreateFolder(topic, user);
+    }
+
+    public void cancleClassify(ClassifyRequest classifyRequest) {
+        bookmarkRepository.removeFolderIdsByBookmarkIds(classifyRequest.getBookmarkIds());
     }
 }

@@ -1,8 +1,10 @@
 package likelion.dotoread.repository;
 
+import org.springframework.transaction.annotation.Transactional;
 import likelion.dotoread.domain.Bookmark;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,9 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     @Query("SELECT b.url FROM Bookmark b WHERE b.id = :id")
     String getUrlById(Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Bookmark b SET b.folder = null WHERE b.id IN :bookmarkIds")
+    void removeFolderIdsByBookmarkIds(List<Long> bookmarkIds);
 }

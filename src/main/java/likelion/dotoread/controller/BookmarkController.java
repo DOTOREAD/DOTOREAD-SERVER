@@ -63,5 +63,4 @@ public class BookmarkController {
         bookmarkIds.forEach(bookmarkService::deleteBookmark);
         return ResponseEntity.noContent().build();
     }
-
 }
