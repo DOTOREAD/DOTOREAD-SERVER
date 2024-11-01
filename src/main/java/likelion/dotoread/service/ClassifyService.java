@@ -94,7 +94,7 @@ public class ClassifyService {
         return folderService.findOrCreateFolder(topic, user);
     }
 
-    public void cancleClassify(ClassifyRequest classifyRequest) {
+    public void cancelClassify(ClassifyRequest classifyRequest) {
         bookmarkRepository.removeFolderIdsByBookmarkIds(classifyRequest.getBookmarkIds());
     }
 
