@@ -26,8 +26,6 @@ public class FolderService {
         User user = userRepository.findById(saveFolderRequest.userId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
         return saveFolder(saveFolderRequest.name(), user);
-
-
     }
 
     @Transactional

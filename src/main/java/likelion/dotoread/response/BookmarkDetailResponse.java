@@ -2,26 +2,31 @@ package likelion.dotoread.response;
 
 import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
-import likelion.dotoread.dto.FolderDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record BookmarkDetailResponse(Long bookmarkId, String title, String url, String img, LocalDateTime createdAt, FolderDTO folder) {
-    public static BookmarkDetailResponse of(final Long bookmarkId, final String title, final String url, String img, final LocalDateTime createdAt, Folder folder) {
-        return new BookmarkDetailResponse(bookmarkId, title, url, img, createdAt, FolderDTO.from(folder));
+import likelion.dotoread.dto.FolderDTO;
+
+public record BookmarkDetailResponse(Long bookmarkId, String title,
+                                     String url, String img, LocalDateTime createdAt, FolderDTO folder) {
+
+    public static BookmarkDetailResponse of(final Long bookmarkId, final String title, final String url,
+                                            String img, final LocalDateTime createdAt, Folder folder) {
+        FolderDTO folderDTO = folder != null ? FolderDTO.from(folder) : null;
+        return new BookmarkDetailResponse(bookmarkId, title, url, img, createdAt, folderDTO);
     }
 
     public static List<BookmarkDetailResponse> from(final List<Bookmark> bookmarks) {
         return bookmarks.stream()
-                .map(bookmark -> new BookmarkDetailResponse(
+                .map(bookmark -> BookmarkDetailResponse.of(
                         bookmark.getId(),
                         bookmark.getTitle(),
                         bookmark.getUrl(),
                         bookmark.getImg(),
                         bookmark.getCreatedAt(),
-                        FolderDTO.from(bookmark.getFolder())
+                        bookmark.getFolder()  // Folder 객체를 넘겨 FolderDTO로 변환
                 ))
                 .collect(Collectors.toList());
     }
