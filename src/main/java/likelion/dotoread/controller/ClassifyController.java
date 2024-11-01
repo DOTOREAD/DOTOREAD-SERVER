@@ -41,9 +41,9 @@ public class ClassifyController {
 
 
     @Operation(summary = "북마크 ai 분류하기 취소", description = "ai 분류된 북마크를 전부 취소합니다.")
-    @PatchMapping("/cancle")
-    public ResponseEntity<Void> cancleClassify(@RequestBody @Valid ClassifyRequest classifyRequest){
-        classifyService.cancleClassify(classifyRequest);
+    @PatchMapping("/cancel")
+    public ResponseEntity<Void> cancelClassify(@RequestBody @Valid ClassifyRequest classifyRequest){
+        classifyService.cancelClassify(classifyRequest);
         return ResponseEntity.noContent().build();
     }
 
