@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Bookmark;
+import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.enums.SortType;
 import likelion.dotoread.repository.BookmarkRepository;
+import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.request.SaveBookmarkRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
@@ -31,11 +33,13 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
+    private final FolderRepository folderRepository;
     String flaskUrl = "http://3.38.2.223:5001"; //TODO:환경 파일에 넣어놓기
 
-    public BookmarkService(BookmarkRepository bookmarkRepository, UserRepository userRepository) {
+    public BookmarkService(BookmarkRepository bookmarkRepository, UserRepository userRepository, FolderRepository folderRepository) {
         this.bookmarkRepository = bookmarkRepository;
         this.userRepository = userRepository;
+        this.folderRepository = folderRepository;
     }
 
     public String crawlTitle(String url){
@@ -121,7 +125,8 @@ public class BookmarkService {
                 bookmark.getTitle(),
                 bookmark.getUrl(),
                 bookmark.getImg(),
-                bookmark.getCreatedAt()
+                bookmark.getCreatedAt(),
+                bookmark.getFolder()
         );
     }
 
@@ -129,8 +134,22 @@ public class BookmarkService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
-        Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
+        Sort sort = Sort.by(Sort.Order.asc("isVisited"),
+                sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(userId, sort);
+        return BookmarkDetailResponse.from(bookmarks);
+    }
+
+    public List<BookmarkDetailResponse> getBookmarksInFolder(Long userId, Long folderId, SortType sortType) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._FOLDER_NOT_FOUND));
+
+        Sort sort = Sort.by(Sort.Order.asc("isVisited"),
+                sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderId(userId, folderId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
 
@@ -138,7 +157,8 @@ public class BookmarkService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
-        Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
+        Sort sort = Sort.by(Sort.Order.asc("isVisited"),
+                sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderIsNull(userId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }

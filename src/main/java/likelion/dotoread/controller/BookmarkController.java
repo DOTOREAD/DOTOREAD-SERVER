@@ -39,6 +39,14 @@ public class BookmarkController {
         return ApiResponse.onSuccess(bookmarkDetail);
     }
 
+    @Operation(summary = "폴더에 있는 북마크 리스트 가져오기", description = "특정 폴더 안에 있는 북마크를 가져옵니다.")
+    @GetMapping("/all/{userId}/{folderId}")
+    public ApiResponse<List<BookmarkDetailResponse>> getBookmarksInFolder(@PathVariable Long userId, @PathVariable Long folderId,
+                                                                     @RequestParam(defaultValue = "DESC") SortType sortType){
+        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getBookmarksInFolder(userId, folderId, sortType);
+        return ApiResponse.onSuccess(bookmarkDetail);
+    }
+
     @Operation(summary = "북마크 리스트 가져오기(분류 X)", description = "사용자의 분류되지 않은 모든 북마크를 가져옵니다.")
     @GetMapping("/uncategorized/{userId}")
     public ApiResponse<List<BookmarkDetailResponse>> getUncategorizedBookmarks(@PathVariable Long userId,
@@ -63,5 +71,4 @@ public class BookmarkController {
         bookmarkIds.forEach(bookmarkService::deleteBookmark);
         return ResponseEntity.noContent().build();
     }
-
 }
