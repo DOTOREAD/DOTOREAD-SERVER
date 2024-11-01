@@ -46,4 +46,11 @@ public class ClassifyController {
         classifyService.cancleClassify(classifyRequest);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "북마크 분류 수정", description = "분류된 북마크를 사용자가 수정합니다.")
+    @PatchMapping("/patch/{bookmarkId}/{folderId}")
+    public ResponseEntity<Void> patchClassify(@PathVariable Long bookmarkId, @PathVariable Long folderId){
+        classifyService.patchClassify(bookmarkId, folderId);
+        return ResponseEntity.noContent().build();
+    }
 }

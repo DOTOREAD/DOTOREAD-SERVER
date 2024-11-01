@@ -8,6 +8,7 @@ import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.repository.BookmarkRepository;
+import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.request.ClassifyRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
@@ -24,12 +25,14 @@ import java.util.stream.Collectors;
 public class ClassifyService {
 
     private final BookmarkRepository bookmarkRepository;
+    private final FolderRepository folderRepository;
     private final FolderService folderService;
     private final UserRepository userRepository;
     String flaskUrl = "http://3.38.2.223:5001";
 
-    public ClassifyService(BookmarkRepository bookmarkRepository, FolderService folderService, UserRepository userRepository) {
+    public ClassifyService(BookmarkRepository bookmarkRepository, FolderRepository folderRepository, FolderService folderService, UserRepository userRepository) {
         this.bookmarkRepository = bookmarkRepository;
+        this.folderRepository = folderRepository;
         this.folderService = folderService;
         this.userRepository = userRepository;
     }
@@ -97,5 +100,13 @@ public class ClassifyService {
 
     public void deleteClassify(Long classifyId) {
         bookmarkRepository.removeFolderIdByBookmarkId(classifyId);
+    }
+
+    public void patchClassify(Long bookmarkId, Long folderId) {
+        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._FOLDER_NOT_FOUND));
+        bookmarkRepository.updateFolderIdByBookmarkId(bookmarkId, folder);
     }
 }
