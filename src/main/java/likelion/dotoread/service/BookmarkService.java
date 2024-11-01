@@ -134,7 +134,8 @@ public class BookmarkService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
-        Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
+        Sort sort = Sort.by(Sort.Order.asc("isVisited"),
+                sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(userId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
@@ -146,7 +147,8 @@ public class BookmarkService {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._FOLDER_NOT_FOUND));
 
-        Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
+        Sort sort = Sort.by(Sort.Order.asc("isVisited"),
+                sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderId(userId, folderId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
@@ -155,7 +157,8 @@ public class BookmarkService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
-        Sort sort = sortType == SortType.ASC ? Sort.by("createdAt").ascending() : Sort.by("createdAt").descending();
+        Sort sort = Sort.by(Sort.Order.asc("isVisited"),
+                sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderIsNull(userId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
