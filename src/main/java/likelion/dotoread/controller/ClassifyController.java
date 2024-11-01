@@ -32,6 +32,14 @@ public class ClassifyController {
         return ApiResponse.onSuccess(classifiedBookmarks);
     }
 
+    @Operation(summary = "북마크 ai 분류하기 삭제", description = "ai 분류된 북마크를 사용자가 삭제합니다.")
+    @PatchMapping("/delete/{bookmarkId}")
+    public ResponseEntity<Void> deleteClassify(@PathVariable Long bookmarkId){
+        classifyService.deleteClassify(bookmarkId);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @Operation(summary = "북마크 ai 분류하기 취소", description = "ai 분류된 북마크를 전부 취소합니다.")
     @PatchMapping("/cancle")
     public ResponseEntity<Void> cancleClassify(@RequestBody @Valid ClassifyRequest classifyRequest){

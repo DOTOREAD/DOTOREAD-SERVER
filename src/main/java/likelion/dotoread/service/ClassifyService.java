@@ -94,4 +94,8 @@ public class ClassifyService {
     public void cancleClassify(ClassifyRequest classifyRequest) {
         bookmarkRepository.removeFolderIdsByBookmarkIds(classifyRequest.getBookmarkIds());
     }
+
+    public void deleteClassify(Long classifyId) {
+        bookmarkRepository.removeFolderIdByBookmarkId(classifyId);
+    }
 }
