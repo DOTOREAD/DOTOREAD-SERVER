@@ -5,10 +5,14 @@ import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
+import likelion.dotoread.dto.FolderDTO;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.request.SaveFolderRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FolderService {
@@ -19,6 +23,13 @@ public class FolderService {
     public FolderService(UserRepository userRepository, FolderRepository folderRepository) {
         this.userRepository = userRepository;
         this.folderRepository = folderRepository;
+    }
+
+    public List<FolderDTO> getFolders(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+        List<Folder> folders = folderRepository.findByUser(user);
+        return folders.stream().map(FolderDTO::from).collect(Collectors.toList());
     }
 
     //후에 자동분류에서의 폴더 생성을 위한 구조 개선
