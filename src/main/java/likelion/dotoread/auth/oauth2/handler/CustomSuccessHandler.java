@@ -83,10 +83,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
-        objectMapper.writeValue(response.getWriter(), apiResponse);
+//        objectMapper.writeValue(response.getWriter(), apiResponse);
 
-        // 리다이렉트
 //        response.sendRedirect("http://localhost:8080");
+        response.sendRedirect("https://localhost:5173");
 
     }
 
