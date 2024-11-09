@@ -1,6 +1,7 @@
 package likelion.dotoread.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
 import likelion.dotoread.request.ClassifyRequest;
@@ -27,8 +28,8 @@ public class ClassifyController {
 
     @Operation(summary = "북마크 ai 분류하기", description = "북마크를 ai 분류합니다.")
     @PostMapping("/ai")
-    public ApiResponse<List<BookmarkDetailResponse>> AIClassify(@RequestBody @Valid ClassifyRequest classifyRequest){
-        List<BookmarkDetailResponse> classifiedBookmarks = classifyService.AIClassify(classifyRequest);
+    public ApiResponse<List<BookmarkDetailResponse>> AIClassify(HttpServletRequest http, @RequestBody @Valid ClassifyRequest classifyRequest){
+        List<BookmarkDetailResponse> classifiedBookmarks = classifyService.AIClassify(http, classifyRequest);
         return ApiResponse.onSuccess(classifiedBookmarks);
     }
 

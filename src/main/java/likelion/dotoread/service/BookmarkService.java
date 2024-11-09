@@ -3,6 +3,7 @@ package likelion.dotoread.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Bookmark;
@@ -34,12 +35,14 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final FolderRepository folderRepository;
+    private final UserService userService;
     String flaskUrl = "http://3.38.2.223:5001"; //TODO:환경 파일에 넣어놓기
 
-    public BookmarkService(BookmarkRepository bookmarkRepository, UserRepository userRepository, FolderRepository folderRepository) {
+    public BookmarkService(BookmarkRepository bookmarkRepository, UserRepository userRepository, FolderRepository folderRepository, UserService userService) {
         this.bookmarkRepository = bookmarkRepository;
         this.userRepository = userRepository;
         this.folderRepository = folderRepository;
+        this.userService = userService;
     }
 
     public String crawlTitle(String url){
@@ -94,9 +97,8 @@ public class BookmarkService {
         bookmarkRepository.delete(bookmark);
     }
 
-    public Long saveBookmark(SaveBookmarkRequest request){
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+    public Long saveBookmark(HttpServletRequest http, SaveBookmarkRequest request){
+        User user = userService.findUserByHttpServletRequest(http);
 
         String title = crawlTitle(request.url());
         String img = crawlImage(request.url());
@@ -130,36 +132,33 @@ public class BookmarkService {
         );
     }
 
-    public List<BookmarkDetailResponse> getAllBookmarks(Long userId, SortType sortType) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+    public List<BookmarkDetailResponse> getAllBookmarks(HttpServletRequest http, SortType sortType) {
+        User user = userService.findUserByHttpServletRequest(http);
 
         Sort sort = Sort.by(Sort.Order.asc("isVisited"),
                 sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
-        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(userId, sort);
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByUser(user, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
 
-    public List<BookmarkDetailResponse> getBookmarksInFolder(Long userId, Long folderId, SortType sortType) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+    public List<BookmarkDetailResponse> getBookmarksInFolder(HttpServletRequest http, Long folderId, SortType sortType) {
+        User user = userService.findUserByHttpServletRequest(http);
 
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._FOLDER_NOT_FOUND));
 
         Sort sort = Sort.by(Sort.Order.asc("isVisited"),
                 sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
-        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderId(userId, folderId, sort);
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserAndFolderId(user, folderId, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
 
-    public List<BookmarkDetailResponse> getUncategorizedBookmarks(Long userId, SortType sortType) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+    public List<BookmarkDetailResponse> getUncategorizedBookmarks(HttpServletRequest http, SortType sortType) {
+        User user = userService.findUserByHttpServletRequest(http);
 
         Sort sort = Sort.by(Sort.Order.asc("isVisited"),
                 sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
-        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndFolderIsNull(userId, sort);
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByUserAndFolderIsNull(user, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
 }

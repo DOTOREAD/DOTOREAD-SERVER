@@ -2,6 +2,7 @@ package likelion.dotoread.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Bookmark;
@@ -29,22 +30,25 @@ public class ClassifyService {
     private final FolderService folderService;
     private final UserRepository userRepository;
     String flaskUrl = "http://3.38.2.223:5001";
+    private final UserService userService;
 
-    public ClassifyService(BookmarkRepository bookmarkRepository, FolderRepository folderRepository, FolderService folderService, UserRepository userRepository) {
+    public ClassifyService(BookmarkRepository bookmarkRepository, FolderRepository folderRepository, FolderService folderService, UserRepository userRepository, UserService userService) {
         this.bookmarkRepository = bookmarkRepository;
         this.folderRepository = folderRepository;
         this.folderService = folderService;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
-    public List<BookmarkDetailResponse> AIClassify(ClassifyRequest classifyRequest) {
+    public List<BookmarkDetailResponse> AIClassify(HttpServletRequest http, ClassifyRequest classifyRequest) {
+        User user = userService.findUserByHttpServletRequest(http);
         return classifyRequest.bookmarkIds().stream()
                 .map(bookmarkId -> {
                     Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                             .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
                     String topic = callAIClassify(bookmarkId);
                     if (topic != null) { // 폴더가 존재하지 않으면 생성하고 존재하면 바로 저장
-                        Folder folder = checkAndCreateFolder(topic, classifyRequest.userId());
+                        Folder folder = folderService.findOrCreateFolder(topic, user);
 
                         bookmark.setFolder(folder);
                         bookmarkRepository.save(bookmark);
@@ -86,12 +90,6 @@ public class ClassifyService {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private Folder checkAndCreateFolder(String topic, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
-        return folderService.findOrCreateFolder(topic, user);
     }
 
     public void cancelClassify(ClassifyRequest classifyRequest) {
