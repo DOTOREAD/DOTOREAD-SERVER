@@ -1,6 +1,7 @@
 package likelion.dotoread.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
 import likelion.dotoread.enums.SortType;
@@ -32,35 +33,34 @@ public class BookmarkController {
     }
 
     @Operation(summary = "북마크 리스트 가져오기(모든 북마크)", description = "사용자의 모든 북마크를 가져옵니다.")
-    @GetMapping("/all/{userId}")
-    public ApiResponse<List<BookmarkDetailResponse>> getAllBookmarks(@PathVariable Long userId,
-                                                                     @RequestParam(defaultValue = "DESC") SortType sortType){
-        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getAllBookmarks(userId, sortType);
+    @GetMapping("/all")
+    public ApiResponse<List<BookmarkDetailResponse>> getAllBookmarks(HttpServletRequest http, @RequestParam(defaultValue = "DESC") SortType sortType){
+        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getAllBookmarks(http, sortType);
         return ApiResponse.onSuccess(bookmarkDetail);
     }
 
     @Operation(summary = "폴더에 있는 북마크 리스트 가져오기", description = "특정 폴더 안에 있는 북마크를 가져옵니다.")
-    @GetMapping("/all/{userId}/{folderId}")
-    public ApiResponse<List<BookmarkDetailResponse>> getBookmarksInFolder(@PathVariable Long userId, @PathVariable Long folderId,
+    @GetMapping("/all/{folderId}")
+    public ApiResponse<List<BookmarkDetailResponse>> getBookmarksInFolder(HttpServletRequest http, @PathVariable Long folderId,
                                                                      @RequestParam(defaultValue = "DESC") SortType sortType){
-        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getBookmarksInFolder(userId, folderId, sortType);
+        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getBookmarksInFolder(http, folderId, sortType);
         return ApiResponse.onSuccess(bookmarkDetail);
     }
 
     @Operation(summary = "북마크 리스트 가져오기(분류 X)", description = "사용자의 분류되지 않은 모든 북마크를 가져옵니다.")
-    @GetMapping("/uncategorized/{userId}")
-    public ApiResponse<List<BookmarkDetailResponse>> getUncategorizedBookmarks(@PathVariable Long userId,
+    @GetMapping("/uncategorized")
+    public ApiResponse<List<BookmarkDetailResponse>> getUncategorizedBookmarks(HttpServletRequest http,
                                                                      @RequestParam(defaultValue = "DESC") SortType sortType){
-        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getUncategorizedBookmarks(userId, sortType);
+        List<BookmarkDetailResponse> bookmarkDetail = bookmarkService.getUncategorizedBookmarks(http, sortType);
         return ApiResponse.onSuccess(bookmarkDetail);
     }
 
     @Operation(summary = "북마크 추가", description = "북마크를 추가할 수 있습니다.")
     @PostMapping
     public ResponseEntity<Void> saveBookmark(
-            @RequestBody @Valid SaveBookmarkRequest saveBookmarkRequest
+            HttpServletRequest http, @RequestBody @Valid SaveBookmarkRequest saveBookmarkRequest
     ) {
-        Long bookmarkId = bookmarkService.saveBookmark(saveBookmarkRequest);
+        Long bookmarkId = bookmarkService.saveBookmark(http, saveBookmarkRequest);
         URI location = URI.create(BASE_URI + bookmarkId);
         return ResponseEntity.created(location).build();
     }
