@@ -15,7 +15,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
 
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("http://localhost:3000","http://localhost:8080",SPRING_SERVER_URL);
+                .allowedOrigins("http://localhost:3000","http://localhost:8080",SPRING_SERVER_URL, "http://localhost:5173");
 //        corsRegistry.addMapping("/**")
 //                .allowedOrigins("http://localhost:3000", "http://localhost:8080", "http://localhost:8081")
 //                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
