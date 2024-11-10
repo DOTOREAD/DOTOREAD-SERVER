@@ -17,6 +17,7 @@ import likelion.dotoread.web.dto.UserDto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Date;
 
 @RestController
@@ -53,6 +54,10 @@ public class UserController {
         response.addCookie(createCookie("refresh", newRefresh));
         UserResponseDTO.JWTResponseDTO result = UserConverter.toJwtResponseDTO(user,newRefresh, false);
         return ApiResponse.of(SuccessStatus._REFRESH_OK, result);
+    }
+    @GetMapping("/google-login")
+    public void login(HttpServletResponse response) throws IOException {
+        response.sendRedirect("https://api.dotoread.shop/oauth2/authorization/google");
     }
     private Cookie createCookie(String key, String value) {
 
