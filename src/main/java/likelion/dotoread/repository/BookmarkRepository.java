@@ -1,6 +1,7 @@
 package likelion.dotoread.repository;
 
 import likelion.dotoread.domain.Folder;
+import likelion.dotoread.domain.User;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import likelion.dotoread.domain.Bookmark;
@@ -15,9 +16,9 @@ import java.util.List;
 @Repository
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
-    List<Bookmark> findAllByUserId(Long userId, Sort sort);
-    List<Bookmark> findAllByUserIdAndFolderIsNull(Long userId, Sort sort);
-    List<Bookmark> findAllByUserIdAndFolderId(Long userId, Long folderId, Sort sort);
+    List<Bookmark> findAllByUser(User user, Sort sort);
+    List<Bookmark> findAllByUserAndFolderIsNull(User user, Sort sort);
+    List<Bookmark> findAllByUserAndFolderId(User user, Long folderId, Sort sort);
 
     @Query("SELECT b.url FROM Bookmark b WHERE b.id = :id")
     String getUrlById(Long id);

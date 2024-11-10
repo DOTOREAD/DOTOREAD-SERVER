@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record SaveFolderRequest(
         @NotBlank(message = "name은 필수 항목입니다.")
-        String name,
-
-        @NotNull(message = "사용자 ID는 필수 항목입니다.")
-        Long userId
+        String name
 ) {
 
 }

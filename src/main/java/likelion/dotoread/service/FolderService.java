@@ -1,5 +1,6 @@
 package likelion.dotoread.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
@@ -19,23 +20,23 @@ public class FolderService {
 
     private final UserRepository userRepository;
     private final FolderRepository folderRepository;
+    private final UserService userService;
 
-    public FolderService(UserRepository userRepository, FolderRepository folderRepository) {
+    public FolderService(UserRepository userRepository, FolderRepository folderRepository, UserService userService) {
         this.userRepository = userRepository;
         this.folderRepository = folderRepository;
+        this.userService = userService;
     }
 
-    public List<FolderDTO> getFolders(Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+    public List<FolderDTO> getFolders(HttpServletRequest http){
+        User user = userService.findUserByHttpServletRequest(http);
         List<Folder> folders = folderRepository.findByUser(user);
         return folders.stream().map(FolderDTO::from).collect(Collectors.toList());
     }
 
     //후에 자동분류에서의 폴더 생성을 위한 구조 개선
-    public Long saveFolder(SaveFolderRequest saveFolderRequest) {
-        User user = userRepository.findById(saveFolderRequest.userId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
+    public Long saveFolder(HttpServletRequest http, SaveFolderRequest saveFolderRequest) {
+        User user = userService.findUserByHttpServletRequest(http);
         return saveFolder(saveFolderRequest.name(), user);
     }
 
