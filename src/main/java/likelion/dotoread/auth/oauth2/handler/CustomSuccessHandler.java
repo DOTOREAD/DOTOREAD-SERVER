@@ -104,6 +104,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        cookie.setHttpOnly(true);
 
         cookie.setAttribute("SameSite", "None");
+        cookie.setDomain("dotoread.shop");
 
         return cookie;
     }
