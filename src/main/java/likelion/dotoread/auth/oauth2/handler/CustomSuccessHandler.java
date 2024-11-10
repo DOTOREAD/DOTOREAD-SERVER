@@ -68,6 +68,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
         addRefreshEntity(username, refresh, 86400000L);
 
+
         // 액세스 토큰은 헤더랑 쿠키에 설정
         response.setHeader("access", access);
         response.addCookie(createCookie("access", access));
