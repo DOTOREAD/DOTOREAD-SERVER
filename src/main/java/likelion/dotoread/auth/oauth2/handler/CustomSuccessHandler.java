@@ -101,6 +101,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setPath("/");
         cookie.setHttpOnly(true);
 
+        cookie.setAttribute("SameSite", "None");
+
         return cookie;
     }
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
