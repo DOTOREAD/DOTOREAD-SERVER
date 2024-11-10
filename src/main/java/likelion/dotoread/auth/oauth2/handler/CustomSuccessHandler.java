@@ -57,8 +57,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String access = jwtUtil.createJwt("access", username, role, 3600000L);
         // 리프레시 토큰 생성 (14일 유효)
         String refresh = jwtUtil.createJwt("refresh", username, role, 1209600000L);
-        // 액세스 토큰은 헤더에 설정
-        response.setHeader("access", access);
 
         User user = userRepository.findByUsername(username);
         user.setAccessToken(access);
@@ -70,6 +68,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
         addRefreshEntity(username, refresh, 86400000L);
 
+        // 액세스 토큰은 헤더랑 쿠키에 설정
+        response.setHeader("access", access);
+        response.addCookie(createCookie("access", access));
         // 리프레시 토큰은 쿠키에 설정
         response.addCookie(createCookie("refresh", refresh));
 
@@ -83,10 +84,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
-        objectMapper.writeValue(response.getWriter(), apiResponse);
+//        objectMapper.writeValue(response.getWriter(), apiResponse);
 
-        // 리다이렉트
 //        response.sendRedirect("http://localhost:8080");
+//        response.sendRedirect("http://localhost:5173");
+        response.sendRedirect("http://localhost:5173?loggedIn=true");
 
     }
 
@@ -95,7 +97,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(60*60*60);
         //cookie.setSecure(true);
-        //cookie.setPath("/");
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
         return cookie;
