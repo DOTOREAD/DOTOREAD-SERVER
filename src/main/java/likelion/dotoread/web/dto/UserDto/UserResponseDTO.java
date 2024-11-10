@@ -18,4 +18,14 @@ public class UserResponseDTO {
         private String accessToken;
         private String refreshToken;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class LoginCheckDTO {
+        private Boolean isNew;
+        private String accessToken;
+        private String refreshToken;
+    }
 }

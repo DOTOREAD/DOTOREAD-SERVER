@@ -4,7 +4,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import likelion.dotoread.api.ApiResponse;
+import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
+import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.auth.jwt.JWTUtil;
 import likelion.dotoread.converter.UserConverter;
 import likelion.dotoread.domain.RefreshToken;
@@ -59,14 +61,37 @@ public class UserController {
     public void login(HttpServletResponse response) throws IOException {
         response.sendRedirect("https://api.dotoread.shop/oauth2/authorization/google");
     }
+    @GetMapping("/login-check")
+    public ApiResponse<UserResponseDTO.JWTResponseDTO> checkLoginStatus(
+            @CookieValue(name = "access", required = false) String accessToken) {
+
+        if (accessToken == null) {
+            throw new UserHandler(ErrorStatus._ACCESS_NOT_FOUND);
+        }
+        Boolean isNew = false;
+        String username = jwtUtil.getUsername(accessToken);
+        User user = userRepository.findByUsername(username);
+        if(user.getNickname() == null || user.getNickname().isEmpty()) {
+            isNew = true;
+        }
+        String refreshToken = refreshRepository.findByUsername(username).getRefresh();
+        UserResponseDTO.JWTResponseDTO result = UserResponseDTO.JWTResponseDTO.builder()
+                .refreshToken(refreshToken)
+                .isNew(isNew)
+                .accessToken(accessToken)
+                .build();
+
+        return ApiResponse.of(SuccessStatus._GOOGLE_LOGIN_OK, result);
+    }
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24*60*60);
-        //cookie.setSecure(true);
-        //cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
+        cookie.setAttribute("SameSite", "None");
         return cookie;
     }
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
