@@ -87,13 +87,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setStatus(HttpStatus.OK.value());
 //        objectMapper.writeValue(response.getWriter(), apiResponse);
 
-//        response.sendRedirect("http://localhost:8080");
+        response.sendRedirect("http://localhost:8080");
 //        response.sendRedirect("https://api.dotoread.shop/health");
 
 //        response.sendRedirect("http://localhost:5173");
-        String targetUrl = "http://localhost:5173/main?loggedIn=true";
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
-        //response.sendRedirect("http://localhost:5173/main?loggedIn=true");
+//        response.sendRedirect("http://localhost:5173/main?loggedIn=true");
     }
 
     private Cookie createCookie(String key, String value) {
