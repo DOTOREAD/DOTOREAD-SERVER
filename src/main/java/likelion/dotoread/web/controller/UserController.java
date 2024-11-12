@@ -57,10 +57,6 @@ public class UserController {
         UserResponseDTO.JWTResponseDTO result = UserConverter.toJwtResponseDTO(user,newRefresh, false);
         return ApiResponse.of(SuccessStatus._REFRESH_OK, result);
     }
-    @GetMapping("/google-login")
-    public void login(HttpServletResponse response) throws IOException {
-        response.sendRedirect("https://api.dotoread.shop/oauth2/authorization/google");
-    }
     @GetMapping("/login-check")
     public ApiResponse<UserResponseDTO.JWTResponseDTO> checkLoginStatus(
             @CookieValue(name = "access", required = false) String accessToken) {
