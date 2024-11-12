@@ -90,8 +90,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        response.sendRedirect("http://localhost:8080");
 //        response.sendRedirect("https://api.dotoread.shop/health");
 
-//        response.sendRedirect("http://localhost:5173");
-        response.sendRedirect("http://localhost:5173/main?loggedIn=true");
+        response.sendRedirect("http://localhost:5173");
+//        response.sendRedirect("http://localhost:5173/main?loggedIn=true");
     }
 
     private Cookie createCookie(String key, String value) {
