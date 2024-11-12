@@ -87,7 +87,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 //        response.sendRedirect("http://localhost:8080");
 //        response.sendRedirect("http://localhost:5173");
-        response.sendRedirect("http://localhost:5173?loggedIn=true");
+        response.sendRedirect("http://localhost:5173/main?loggedIn=true");
 
     }
 
