@@ -1,6 +1,5 @@
 package likelion.dotoread.auth.oauth2.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,10 +9,13 @@ import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.auth.jwt.JWTUtil;
 import likelion.dotoread.auth.oauth2.CustomOAuth2User;
 import likelion.dotoread.converter.UserConverter;
+import likelion.dotoread.domain.Mission;
 import likelion.dotoread.domain.RefreshToken;
 import likelion.dotoread.domain.User;
+import likelion.dotoread.repository.MissionRepository;
 import likelion.dotoread.repository.RefreshRepository;
 import likelion.dotoread.repository.UserRepository;
+import likelion.dotoread.service.MissionService;
 import likelion.dotoread.service.UserService;
 import likelion.dotoread.web.dto.UserDto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -36,8 +39,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
     private final UserRepository userRepository;
-    private final ObjectMapper objectMapper;
     private final UserService userService;
+    private final MissionRepository missionRepository;
+    private final MissionService missionService;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -61,6 +66,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         User user = userRepository.findByUsername(username);
         user.setAccessToken(access);
+        List<Mission> missions = missionRepository.findAll();
+        missionService.createUserMissions(user, missions);
         userRepository.save(user);
 
         //Refresh 토큰 저장
