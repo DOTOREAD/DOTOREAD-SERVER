@@ -5,6 +5,8 @@ import likelion.dotoread.domain.common.BaseEntity;
 import likelion.dotoread.domain.mapping.UserMission;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -15,7 +17,8 @@ public class AcornAdd extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer addAcorn;
-    @OneToOne(fetch = FetchType.LAZY)
+    private LocalDateTime addedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_mission_id")
     private UserMission userMission;
 }

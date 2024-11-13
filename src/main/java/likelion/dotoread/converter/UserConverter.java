@@ -11,4 +11,11 @@ public class UserConverter {
                 .isNew(isNew)
                 .build();
     }
+    public static UserResponseDTO.JWTResponseDTO toLoginCheck(boolean isNew, String accessToken, String refreshToken) {
+        return UserResponseDTO.JWTResponseDTO.builder()
+                .refreshToken(refreshToken)
+                .isNew(isNew)
+                .accessToken(accessToken)
+                .build();
+    }
 }

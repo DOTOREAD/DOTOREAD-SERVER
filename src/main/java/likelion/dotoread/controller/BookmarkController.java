@@ -27,8 +27,8 @@ public class BookmarkController {
 
     @Operation(summary = "북마크 정보 가져오기", description = "하나의 북마크 정보를 가져옵니다.")
     @GetMapping("/{bookmarkId}")
-    public ApiResponse<BookmarkDetailResponse> getBookmarkDetail(@PathVariable Long bookmarkId){
-        BookmarkDetailResponse bookmarkDetail = bookmarkService.getBookmarkDetail(bookmarkId);
+    public ApiResponse<BookmarkDetailResponse> getBookmarkDetail(HttpServletRequest http, @PathVariable Long bookmarkId){
+        BookmarkDetailResponse bookmarkDetail = bookmarkService.getBookmarkDetail(http, bookmarkId);
         return ApiResponse.onSuccess(bookmarkDetail);
     }
 

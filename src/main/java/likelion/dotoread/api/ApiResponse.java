@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import likelion.dotoread.api.code.BaseCode;
+import likelion.dotoread.api.code.BaseErrorCode;
 import likelion.dotoread.api.code.status.SuccessStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +31,9 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> onFailure(String code, String message, T data){
         return new ApiResponse<>(false, code, message, data);
+    }
+    public static <T> ApiResponse<T> ofFail(BaseErrorCode code){
+        return new ApiResponse<>(false, code.getReasonHttpStatus().getCode() , code.getReasonHttpStatus().getMessage(),null);
+
     }
 }

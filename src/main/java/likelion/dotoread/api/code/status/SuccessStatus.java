@@ -19,6 +19,9 @@ public enum SuccessStatus implements BaseCode {
     //폴더 (키워드 추출)
     _KEYWORD_OK(HttpStatus.OK, "FOLDER2001", "키워드 추출이 완료되었습니다."),
 
+    //미션
+    _MISSION_GET_OK(HttpStatus.OK, "MISSON2001", "미션 조회가 완료되었습니다.")
+
     ;
     private final HttpStatus httpStatus;
     private final String code;

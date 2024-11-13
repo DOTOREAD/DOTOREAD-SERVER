@@ -1,12 +1,11 @@
 package likelion.dotoread.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import likelion.dotoread.api.ApiResponse;
-import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
-import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.auth.jwt.JWTUtil;
 import likelion.dotoread.converter.UserConverter;
 import likelion.dotoread.domain.RefreshToken;
@@ -19,23 +18,25 @@ import likelion.dotoread.web.dto.UserDto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/bookmarks")
 public class UserController {
     private final UserService userService;
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
     private final UserRepository userRepository;
     @PostMapping("/sign-up")
+    @Operation(summary = "회원가입(닉네임설정)", description = "닉네임을 설정합니다.")
     public ApiResponse signUp(HttpServletRequest http, @RequestBody UserRequestDTO.SignUpDTO request) {
         User user = userService.findUserByHttpServletRequest(http);
         userService.signUp(user, request.getNickname());
         return ApiResponse.of(SuccessStatus._SIGN_UP_OK,null);
     }
     @PostMapping("/reissue")
+    @Operation(summary = "토큰 재발급", description = "refresh 토큰으로 access 토큰을 재발급 받습니다.")
     public ApiResponse<UserResponseDTO.JWTResponseDTO> reissue(HttpServletRequest request, HttpServletResponse response) {
         //get refresh token
         String refresh = userService.getRefresh(request, response, null);
@@ -57,28 +58,8 @@ public class UserController {
         UserResponseDTO.JWTResponseDTO result = UserConverter.toJwtResponseDTO(user,newRefresh, false);
         return ApiResponse.of(SuccessStatus._REFRESH_OK, result);
     }
-    @GetMapping("/login-check")
-    public ApiResponse<UserResponseDTO.JWTResponseDTO> checkLoginStatus(
-            @CookieValue(name = "access", required = false) String accessToken) {
 
-        if (accessToken == null) {
-            throw new UserHandler(ErrorStatus._ACCESS_NOT_FOUND);
-        }
-        Boolean isNew = false;
-        String username = jwtUtil.getUsername(accessToken);
-        User user = userRepository.findByUsername(username);
-        if(user.getNickname() == null || user.getNickname().isEmpty()) {
-            isNew = true;
-        }
-        String refreshToken = refreshRepository.findByUsername(username).getRefresh();
-        UserResponseDTO.JWTResponseDTO result = UserResponseDTO.JWTResponseDTO.builder()
-                .refreshToken(refreshToken)
-                .isNew(isNew)
-                .accessToken(accessToken)
-                .build();
-
-        return ApiResponse.of(SuccessStatus._GOOGLE_LOGIN_OK, result);
-    }
+    //
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);

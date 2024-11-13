@@ -48,4 +48,7 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
+    public void addAcorn(Integer acorn){
+        this.acornCount += acorn;
+    }
 }
