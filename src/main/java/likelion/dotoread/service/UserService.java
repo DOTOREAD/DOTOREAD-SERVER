@@ -7,10 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.auth.jwt.JWTUtil;
+import likelion.dotoread.converter.UserConverter;
 import likelion.dotoread.domain.RefreshToken;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.repository.RefreshRepository;
 import likelion.dotoread.repository.UserRepository;
+import likelion.dotoread.web.dto.UserDto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -82,5 +84,18 @@ public class UserService {
             throw new UserHandler(ErrorStatus._REFRESH_INVALID);
         }
         return refresh;
+    }
+
+
+    public UserResponseDTO.JWTResponseDTO getLoginInfo(String accessToken) {
+        Boolean isNew = false;
+        String username = jwtUtil.getUsername(accessToken);
+        User user = userRepository.findByUsername(username);
+        if(user.getNickname() == null || user.getNickname().isEmpty()) {
+            isNew = true;
+        }
+        String refreshToken = refreshRepository.findByUsername(username).getRefresh();
+        UserResponseDTO.JWTResponseDTO result = UserConverter.toLoginCheck(isNew, accessToken, refreshToken);
+        return result;
     }
 }
