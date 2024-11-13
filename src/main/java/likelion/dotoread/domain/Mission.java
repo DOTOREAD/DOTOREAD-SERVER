@@ -19,7 +19,6 @@ public class Mission extends BaseEntity {
     private Long id;
     private String content;
     private Integer goal;
-    private Integer reward;
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL)
     private List<UserMission> userMissionList = new ArrayList<>();
 }
