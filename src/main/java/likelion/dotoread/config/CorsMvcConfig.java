@@ -14,7 +14,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "http://localhost:8080",
-                        SPRING_SERVER_URL, "http://localhost:5173")
+                        SPRING_SERVER_URL, "http://localhost:5173", "https://api.dotoread.shop", "http://api.dotoread.shop")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Set-Cookie", "Authorization")
