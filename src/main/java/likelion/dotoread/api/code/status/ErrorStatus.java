@@ -27,7 +27,14 @@ public enum ErrorStatus implements BaseErrorCode {
     //NOTFOUND
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "User not found."),
     _BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOKMARK404", "Bookmark not found."),
-    _FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLDER404", "Folder not found.");
+    _FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLDER404", "Folder not found."),
+
+    //도토리
+    _ACORN_LACK(HttpStatus.BAD_REQUEST, "ACORN4001", "도토리가 부족합니다."),
+
+
+
+    ;
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

@@ -20,7 +20,22 @@ public enum SuccessStatus implements BaseCode {
     _KEYWORD_OK(HttpStatus.OK, "FOLDER2001", "키워드 추출이 완료되었습니다."),
 
     //미션
-    _MISSION_GET_OK(HttpStatus.OK, "MISSON2001", "미션 조회가 완료되었습니다.")
+    _MISSION_GET_OK(HttpStatus.OK, "MISSON2001", "미션 조회가 완료되었습니다."),
+
+    //상점(후원 및 스토리지 늘리기)
+    _FUND_OK(HttpStatus.OK, "STORE2001", "후원이 완료되었습니다."),
+    _UPGRADE_STORAGE_OK(HttpStatus.OK, "STORE2002","스토리지 구매가 완료되었습니다."),
+
+    //유저
+    _GET_OWNACORN_OK(HttpStatus.OK,"USER2001", "보유 도토리 개수를 조회가 완료되었습니다."),
+    _GET_STORAGE_OK(HttpStatus.OK, "USER2002", "보유 스토리지 개수 조회가 완료되었습니다."),
+
+    //도토리
+    _GET_ACORNADD_HISTORY_OK(HttpStatus.OK,"ACORN2001", "도토리 적립 내역 조회가 완료되었습니다."),
+    _GET_ACORNUSE_HISTORY_OK(HttpStatus.OK,"ACORN2002", "도토리 사용 내역 조회가 완료되었습니다."),
+
+
+
 
     ;
     private final HttpStatus httpStatus;

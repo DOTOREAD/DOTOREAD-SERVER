@@ -18,4 +18,18 @@ public class UserResponseDTO {
         private String accessToken;
         private String refreshToken;
     }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class StorageDTO {
+        private Integer ownStorage;
+    }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class OwnAcornDTO {
+        Integer ownAcorn;
+    }
 }

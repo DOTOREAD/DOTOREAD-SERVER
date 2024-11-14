@@ -44,7 +44,8 @@ public class UserController {
         String role = jwtUtil.getRole(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
+        //TODO : 토큰 시간 줄이기
+        String newAccess = jwtUtil.createJwt("access", username, role, 86400000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
         //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         refreshRepository.deleteByRefresh(refresh);
@@ -57,6 +58,21 @@ public class UserController {
         response.addCookie(createCookie("refresh", newRefresh));
         UserResponseDTO.JWTResponseDTO result = UserConverter.toJwtResponseDTO(user,newRefresh, false);
         return ApiResponse.of(SuccessStatus._REFRESH_OK, result);
+    }
+    @GetMapping("/acorns")
+    @Operation(summary = "보유 도토리 개수 조회 api", description = "보유하고 있는 도토리의 총 개수를 조회하는 api 입니다.")
+    public ApiResponse<UserResponseDTO.OwnAcornDTO> getAcorns(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        UserResponseDTO.OwnAcornDTO response = userService.getOwnAcorns(user);
+        return ApiResponse.of(SuccessStatus._GET_OWNACORN_OK,response);
+    }
+
+    @GetMapping("/storages")
+    @Operation(summary = "보유 스토리지 개수 조회 api", description = "보유하고 있는 스토리지 총 개수를 조회하는 api 입니다.")
+    public ApiResponse<UserResponseDTO.StorageDTO> getStorages(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        UserResponseDTO.StorageDTO response = userService.getSotrages(user);
+        return ApiResponse.of(SuccessStatus._GET_STORAGE_OK,response);
     }
 
     //

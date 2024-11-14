@@ -33,6 +33,8 @@ public class User extends BaseEntity {
     private List<AcornUse> acornUseList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMission> userMissionList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<AcornAdd> acronAddList = new ArrayList<>();
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
@@ -51,4 +53,6 @@ public class User extends BaseEntity {
     public void addAcorn(Integer acorn){
         this.acornCount += acorn;
     }
+    public void useAcorn(Integer acorn) {this.acornCount -= acorn;}
+    public void addStorage(Integer storage) {this.storageCount += storage;}
 }
