@@ -18,6 +18,7 @@ public class AcornConverter {
                 .addAcorn(addAcorn)
                 .addedAt(LocalDateTime.now())
                 .userMission(userMission)
+                .user(userMission.getUser())
                 .build();
     }
 
