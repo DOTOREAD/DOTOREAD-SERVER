@@ -44,7 +44,8 @@ public class UserController {
         String role = jwtUtil.getRole(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
+        //TODO : 토큰 시간 줄이기
+        String newAccess = jwtUtil.createJwt("access", username, role, 86400000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
         //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         refreshRepository.deleteByRefresh(refresh);
