@@ -13,6 +13,7 @@ import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.request.ClassifyRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +30,8 @@ public class ClassifyService {
     private final FolderRepository folderRepository;
     private final FolderService folderService;
     private final UserRepository userRepository;
-    String flaskUrl = "http://3.38.2.223:5001";
+    @Value("${flask.server.url}")
+    String flaskUrl;
     private final UserService userService;
 
     public ClassifyService(BookmarkRepository bookmarkRepository, FolderRepository folderRepository, FolderService folderService, UserRepository userRepository, UserService userService) {
