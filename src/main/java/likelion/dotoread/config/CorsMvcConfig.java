@@ -15,7 +15,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
         corsRegistry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "http://localhost:8080",
                         SPRING_SERVER_URL, "http://localhost:5173", " http://localhost:5173/")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .exposedHeaders("Set-Cookie", "Authorization")
                 .allowCredentials(true)  // 쿠키 전송을 위해 필수
