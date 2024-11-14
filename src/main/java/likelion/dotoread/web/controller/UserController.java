@@ -22,7 +22,7 @@ import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/bookmarks")
+@RequestMapping("api/v1")
 public class UserController {
     private final UserService userService;
     private final JWTUtil jwtUtil;
