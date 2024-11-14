@@ -53,4 +53,6 @@ public class User extends BaseEntity {
     public void addAcorn(Integer acorn){
         this.acornCount += acorn;
     }
+    public void useAcorn(Integer acorn) {this.acornCount -= acorn;}
+    public void addStorage(Integer storage) {this.storageCount += storage;}
 }
