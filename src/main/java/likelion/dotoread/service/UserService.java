@@ -98,4 +98,11 @@ public class UserService {
         UserResponseDTO.JWTResponseDTO result = UserConverter.toLoginCheck(isNew, accessToken, refreshToken);
         return result;
     }
+    public UserResponseDTO.OwnAcornDTO getOwnAcorns(User user) {
+        return UserConverter.toOwnAcornDTO(user.getAcornCount());
+    }
+
+    public UserResponseDTO.StorageDTO getSotrages(User user) {
+        return UserConverter.toStorageDTO(user.getStorageCount());
+    }
 }

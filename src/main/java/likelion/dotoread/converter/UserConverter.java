@@ -18,4 +18,14 @@ public class UserConverter {
                 .accessToken(accessToken)
                 .build();
     }
+    public static UserResponseDTO.StorageDTO toStorageDTO(Integer storages) {
+        return UserResponseDTO.StorageDTO.builder()
+                .ownStorage(storages)
+                .build();
+    }
+    public static UserResponseDTO.OwnAcornDTO toOwnAcornDTO(Integer acorns) {
+        return UserResponseDTO.OwnAcornDTO.builder()
+                .ownAcorn(acorns)
+                .build();
+    }
 }
