@@ -134,7 +134,7 @@ public class BookmarkService {
             userMissionRepository.save(userMission);
             missionService.missionUpdate(userMission);
         }
-        else if(bookmark.getVisitedAt().plusDays(7).isBefore(LocalDateTime.now())) {
+        else if(bookmark.getIsVisited() == true && bookmark.getVisitedAt().plusDays(7).isBefore(LocalDateTime.now())) {
             UserMission userMission = userMissionRepository.findByUserAndMissionId(user, 1L);
             userMission.setCurrent();
             userMissionRepository.save(userMission);
