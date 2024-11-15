@@ -10,6 +10,7 @@ import likelion.dotoread.auth.jwt.JWTUtil;
 import likelion.dotoread.converter.UserConverter;
 import likelion.dotoread.domain.RefreshToken;
 import likelion.dotoread.domain.User;
+import likelion.dotoread.repository.BookmarkRepository;
 import likelion.dotoread.repository.RefreshRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.web.dto.UserDto.UserResponseDTO;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final RefreshRepository refreshRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final JWTUtil jwtUtil;
     public User findUserByHttpServletRequest(HttpServletRequest request) {
         String accessToken = request.getHeader("access");
@@ -102,8 +104,8 @@ public class UserService {
         return UserConverter.toOwnAcornDTO(user.getAcornCount());
     }
 
-    public UserResponseDTO.StorageDTO getSotrages(User user) {
-        return UserConverter.toStorageDTO(user.getStorageCount());
+    public UserResponseDTO.StorageDTO getUserStorages(User user) {
+        return UserConverter.toStorageDTO(user);
     }
 
     public UserResponseDTO.ReadBookmark getReadBookmark(User user) {

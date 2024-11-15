@@ -24,6 +24,7 @@ public class UserResponseDTO {
     @Builder
     public static class StorageDTO {
         private Integer ownStorage;
+        private Integer usedStorage;
     }
     @Getter
     @NoArgsConstructor

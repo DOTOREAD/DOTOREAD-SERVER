@@ -68,10 +68,10 @@ public class UserController {
     }
 
     @GetMapping("/storages")
-    @Operation(summary = "보유 스토리지 개수 조회 api", description = "보유하고 있는 스토리지 총 개수를 조회하는 api 입니다.")
+    @Operation(summary = "보유 스토리지 및 사용 스토리지 개수 조회 api", description = "보유하고 있는 스토리지와 사용된 스토리지 총 개수를 조회하는 api 입니다.")
     public ApiResponse<UserResponseDTO.StorageDTO> getStorages(HttpServletRequest http) {
         User user = userService.findUserByHttpServletRequest(http);
-        UserResponseDTO.StorageDTO response = userService.getSotrages(user);
+        UserResponseDTO.StorageDTO response = userService.getUserStorages(user);
         return ApiResponse.of(SuccessStatus._GET_STORAGE_OK,response);
     }
 
