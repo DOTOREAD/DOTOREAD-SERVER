@@ -101,6 +101,9 @@ public class BookmarkService {
     public void deleteBookmark(Long bookmarkId) {
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
+        User user = bookmark.getUser();
+        user.minusBookmark();
+        userRepository.save(user);
         bookmarkRepository.delete(bookmark);
     }
 
@@ -119,6 +122,8 @@ public class BookmarkService {
         Bookmark savedBookmark = bookmarkRepository.save(bookmark);
         UserMission userMission = userMissionRepository.findByUserAndMissionId(user, 2L);
         userMission.setCurrent();
+        user.addBookmark();
+        userRepository.save(user);
         userMissionRepository.save(userMission);
         missionService.missionUpdate(userMission);
         return savedBookmark.getId();

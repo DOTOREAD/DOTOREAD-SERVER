@@ -55,4 +55,6 @@ public class User extends BaseEntity {
     }
     public void useAcorn(Integer acorn) {this.acornCount -= acorn;}
     public void addStorage(Integer storage) {this.storageCount += storage;}
+    public void addBookmark(){this.bookmark++;}
+    public void minusBookmark(){this.bookmark--;}
 }
