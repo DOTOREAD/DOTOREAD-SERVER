@@ -18,14 +18,23 @@ public class UserConverter {
                 .accessToken(accessToken)
                 .build();
     }
-    public static UserResponseDTO.StorageDTO toStorageDTO(Integer storages) {
+    public static UserResponseDTO.StorageDTO toStorageDTO(User user) {
         return UserResponseDTO.StorageDTO.builder()
-                .ownStorage(storages)
+                .usedStorage(user.getBookmark())
+                .ownStorage(user.getStorageCount())
                 .build();
     }
-    public static UserResponseDTO.OwnAcornDTO toOwnAcornDTO(Integer acorns) {
+    public static UserResponseDTO.OwnAcornDTO toOwnAcornDTO(User user) {
         return UserResponseDTO.OwnAcornDTO.builder()
-                .ownAcorn(acorns)
+                .donatedAcorn(user.getDonated())
+                .ownAcorn(user.getAcornCount())
+                .build();
+    }
+
+    public static UserResponseDTO.ReadBookmark toReadBookmark(User user, Integer read) {
+        return UserResponseDTO.ReadBookmark.builder()
+                .readBookmark(read)
+                .bookmark(user.getBookmark())
                 .build();
     }
 }

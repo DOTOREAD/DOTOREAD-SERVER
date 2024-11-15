@@ -60,7 +60,7 @@ public class UserController {
         return ApiResponse.of(SuccessStatus._REFRESH_OK, result);
     }
     @GetMapping("/acorns")
-    @Operation(summary = "보유 도토리 개수 조회 api", description = "보유하고 있는 도토리의 총 개수를 조회하는 api 입니다.")
+    @Operation(summary = "보유 도토리 및 기부한 도토리 개수 조회 api", description = "보유하고 있는 도토리와 기부한 도토리 총 개수를 조회하는 api 입니다.")
     public ApiResponse<UserResponseDTO.OwnAcornDTO> getAcorns(HttpServletRequest http) {
         User user = userService.findUserByHttpServletRequest(http);
         UserResponseDTO.OwnAcornDTO response = userService.getOwnAcorns(user);
@@ -68,11 +68,19 @@ public class UserController {
     }
 
     @GetMapping("/storages")
-    @Operation(summary = "보유 스토리지 개수 조회 api", description = "보유하고 있는 스토리지 총 개수를 조회하는 api 입니다.")
+    @Operation(summary = "보유 스토리지 및 사용 스토리지 개수 조회 api", description = "보유하고 있는 스토리지와 사용된 스토리지 총 개수를 조회하는 api 입니다.")
     public ApiResponse<UserResponseDTO.StorageDTO> getStorages(HttpServletRequest http) {
         User user = userService.findUserByHttpServletRequest(http);
-        UserResponseDTO.StorageDTO response = userService.getSotrages(user);
+        UserResponseDTO.StorageDTO response = userService.getUserStorages(user);
         return ApiResponse.of(SuccessStatus._GET_STORAGE_OK,response);
+    }
+
+    @GetMapping("/read-bookmarks")
+    @Operation(summary = "총 북마크와 읽은 북마크 수 조회 api", description = "사용자의 총 북마크 개수와 그 중 읽은 북마크 개수를 조회합니다.")
+    public ApiResponse<UserResponseDTO.ReadBookmark> getBookmarkCount(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        UserResponseDTO.ReadBookmark response = userService.getReadBookmark(user);
+        return ApiResponse.of(SuccessStatus._GET_READ_BOOKMARK_OK,response);
     }
 
     //

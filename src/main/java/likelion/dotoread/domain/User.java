@@ -24,9 +24,14 @@ public class User extends BaseEntity {
     private String username;
     private String role;
     @Builder.Default
-    private Integer storageCount = 5;
+    private Integer donated = 0;
+    @Builder.Default
+    private Integer storageCount = 100;
     @Builder.Default
     private Integer acornCount = 0;
+    @Builder.Default
+    private Integer bookmark = 0;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarkList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -53,6 +58,11 @@ public class User extends BaseEntity {
     public void addAcorn(Integer acorn){
         this.acornCount += acorn;
     }
+    public void addDonated(Integer acorn) {
+        this.donated += acorn;
+    }
     public void useAcorn(Integer acorn) {this.acornCount -= acorn;}
     public void addStorage(Integer storage) {this.storageCount += storage;}
+    public void addBookmark(){this.bookmark++;}
+    public void minusBookmark(){this.bookmark--;}
 }

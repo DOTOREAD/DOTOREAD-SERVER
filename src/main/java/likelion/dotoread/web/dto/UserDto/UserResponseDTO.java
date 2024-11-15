@@ -24,6 +24,7 @@ public class UserResponseDTO {
     @Builder
     public static class StorageDTO {
         private Integer ownStorage;
+        private Integer usedStorage;
     }
     @Getter
     @NoArgsConstructor
@@ -31,5 +32,14 @@ public class UserResponseDTO {
     @Builder
     public static class OwnAcornDTO {
         Integer ownAcorn;
+        Integer donatedAcorn;
+    }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReadBookmark {
+        Integer bookmark;
+        Integer readBookmark;
     }
 }

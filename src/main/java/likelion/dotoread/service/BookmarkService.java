@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
+import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
@@ -101,12 +102,17 @@ public class BookmarkService {
     public void deleteBookmark(Long bookmarkId) {
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
+        User user = bookmark.getUser();
+        user.minusBookmark();
+        userRepository.save(user);
         bookmarkRepository.delete(bookmark);
     }
 
     public Long saveBookmark(HttpServletRequest http, SaveBookmarkRequest request){
         User user = userService.findUserByHttpServletRequest(http);
-
+        if(user.getStorageCount()<=user.getBookmark()) {
+            throw new UserHandler(ErrorStatus._STORAGE_LACK);
+        }
         String title = crawlTitle(request.url());
         String img = crawlImage(request.url());
 
@@ -119,6 +125,8 @@ public class BookmarkService {
         Bookmark savedBookmark = bookmarkRepository.save(bookmark);
         UserMission userMission = userMissionRepository.findByUserAndMissionId(user, 2L);
         userMission.setCurrent();
+        user.addBookmark();
+        userRepository.save(user);
         userMissionRepository.save(userMission);
         missionService.missionUpdate(userMission);
         return savedBookmark.getId();
@@ -183,6 +191,21 @@ public class BookmarkService {
         Sort sort = Sort.by(Sort.Order.asc("isVisited"),
                 sortType == SortType.ASC ? Sort.Order.asc("createdAt") : Sort.Order.desc("createdAt"));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserAndFolderIsNull(user, sort);
+        return BookmarkDetailResponse.from(bookmarks);
+    }
+
+    public List<BookmarkDetailResponse> getFreshArticle(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        List<Bookmark> bookmarks = bookmarkRepository.findFreshArticle(user);
+        return BookmarkDetailResponse.from(bookmarks);
+    }
+
+    public List<BookmarkDetailResponse> getRottenArticle(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        List<Bookmark> bookmarks = bookmarkRepository.findRottenArticle(user);
+        if(bookmarks.size() == 0) {
+            bookmarks = bookmarkRepository.findOldArticle(user);
+        }
         return BookmarkDetailResponse.from(bookmarks);
     }
 }
