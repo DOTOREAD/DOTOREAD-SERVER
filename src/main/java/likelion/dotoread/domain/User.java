@@ -24,6 +24,8 @@ public class User extends BaseEntity {
     private String username;
     private String role;
     @Builder.Default
+    private Integer donated = 0;
+    @Builder.Default
     private Integer storageCount = 100;
     @Builder.Default
     private Integer acornCount = 0;
@@ -55,6 +57,9 @@ public class User extends BaseEntity {
 
     public void addAcorn(Integer acorn){
         this.acornCount += acorn;
+    }
+    public void addDonated(Integer acorn) {
+        this.donated += acorn;
     }
     public void useAcorn(Integer acorn) {this.acornCount -= acorn;}
     public void addStorage(Integer storage) {this.storageCount += storage;}
