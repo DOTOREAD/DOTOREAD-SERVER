@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     private String username;
     private String role;
     @Builder.Default
-    private Integer storageCount = 5;
+    private Integer storageCount = 100;
     @Builder.Default
     private Integer acornCount = 0;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
