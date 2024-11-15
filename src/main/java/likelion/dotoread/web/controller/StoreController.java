@@ -28,7 +28,7 @@ public class StoreController {
         return ApiResponse.of(SuccessStatus._FUND_OK,null);
     }
     @PostMapping("/funds/kara")
-    @Operation(summary = "World Wide Fund 후원 api", description = "동물 행동권 카라에 후원하는 api 입니다.")
+    @Operation(summary = "동물 행동권 카라 후원 api", description = "동물 행동권 카라에 후원하는 api 입니다.")
     public ApiResponse fundKARA(HttpServletRequest http, @RequestBody StoreRequestDTO.UseAcornDTO request) {
         User user = userService.findUserByHttpServletRequest(http);
         storeService.acornUse(user, request.getUseAcorn(), 2L);
