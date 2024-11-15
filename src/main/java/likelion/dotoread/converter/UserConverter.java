@@ -24,9 +24,10 @@ public class UserConverter {
                 .ownStorage(user.getStorageCount())
                 .build();
     }
-    public static UserResponseDTO.OwnAcornDTO toOwnAcornDTO(Integer acorns) {
+    public static UserResponseDTO.OwnAcornDTO toOwnAcornDTO(User user) {
         return UserResponseDTO.OwnAcornDTO.builder()
-                .ownAcorn(acorns)
+                .donatedAcorn(user.getDonated())
+                .ownAcorn(user.getAcornCount())
                 .build();
     }
 

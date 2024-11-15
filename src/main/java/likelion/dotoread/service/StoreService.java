@@ -26,6 +26,7 @@ public class StoreService {
                 .orElseThrow(()->new RuntimeException("store가 존재하지 않습니다."));
         AcornUse acornUse = AcornConverter.toAcornUse(useAcorn, store, user);
         user.useAcorn(useAcorn);
+        user.addDonated(useAcorn);
         acornUseRepository.save(acornUse);
         userRepository.save(user);
     }

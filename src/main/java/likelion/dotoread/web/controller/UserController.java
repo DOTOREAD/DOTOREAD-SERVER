@@ -60,7 +60,7 @@ public class UserController {
         return ApiResponse.of(SuccessStatus._REFRESH_OK, result);
     }
     @GetMapping("/acorns")
-    @Operation(summary = "보유 도토리 개수 조회 api", description = "보유하고 있는 도토리의 총 개수를 조회하는 api 입니다.")
+    @Operation(summary = "보유 도토리 및 기부한 도토리 개수 조회 api", description = "보유하고 있는 도토리와 기부한 도토리 총 개수를 조회하는 api 입니다.")
     public ApiResponse<UserResponseDTO.OwnAcornDTO> getAcorns(HttpServletRequest http) {
         User user = userService.findUserByHttpServletRequest(http);
         UserResponseDTO.OwnAcornDTO response = userService.getOwnAcorns(user);

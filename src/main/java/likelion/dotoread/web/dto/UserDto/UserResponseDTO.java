@@ -32,6 +32,7 @@ public class UserResponseDTO {
     @Builder
     public static class OwnAcornDTO {
         Integer ownAcorn;
+        Integer donatedAcorn;
     }
     @Getter
     @NoArgsConstructor

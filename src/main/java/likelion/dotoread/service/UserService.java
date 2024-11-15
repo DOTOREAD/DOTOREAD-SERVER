@@ -101,7 +101,7 @@ public class UserService {
         return result;
     }
     public UserResponseDTO.OwnAcornDTO getOwnAcorns(User user) {
-        return UserConverter.toOwnAcornDTO(user.getAcornCount());
+        return UserConverter.toOwnAcornDTO(user);
     }
 
     public UserResponseDTO.StorageDTO getUserStorages(User user) {
