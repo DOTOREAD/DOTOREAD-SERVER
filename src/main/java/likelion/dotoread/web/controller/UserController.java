@@ -75,6 +75,14 @@ public class UserController {
         return ApiResponse.of(SuccessStatus._GET_STORAGE_OK,response);
     }
 
+    @GetMapping("/read-bookmarks")
+    @Operation(summary = "총 북마크와 읽은 북마크 수 조회 api", description = "사용자의 총 북마크 개수와 그 중 읽은 북마크 개수를 조회합니다.")
+    public ApiResponse<UserResponseDTO.ReadBookmark> getBookmarkCount(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        UserResponseDTO.ReadBookmark response = userService.getReadBookmark(user);
+        return ApiResponse.of(SuccessStatus._GET_READ_BOOKMARK_OK,response);
+    }
+
     //
     private Cookie createCookie(String key, String value) {
 

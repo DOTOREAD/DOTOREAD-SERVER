@@ -105,4 +105,9 @@ public class UserService {
     public UserResponseDTO.StorageDTO getSotrages(User user) {
         return UserConverter.toStorageDTO(user.getStorageCount());
     }
+
+    public UserResponseDTO.ReadBookmark getReadBookmark(User user) {
+        Integer read = bookmarkRepository.countAllByUserAndIsVisited(user);
+        return UserConverter.toReadBookmark(user,read);
+    }
 }

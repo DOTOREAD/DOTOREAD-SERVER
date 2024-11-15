@@ -32,4 +32,12 @@ public class UserResponseDTO {
     public static class OwnAcornDTO {
         Integer ownAcorn;
     }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReadBookmark {
+        Integer bookmark;
+        Integer readBookmark;
+    }
 }

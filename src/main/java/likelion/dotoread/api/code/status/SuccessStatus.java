@@ -28,7 +28,8 @@ public enum SuccessStatus implements BaseCode {
 
     //유저
     _GET_OWNACORN_OK(HttpStatus.OK,"USER2001", "보유 도토리 개수를 조회가 완료되었습니다."),
-    _GET_STORAGE_OK(HttpStatus.OK, "USER2002", "보유 스토리지 개수 조회가 완료되었습니다."),
+    _GET_STORAGE_OK(HttpStatus.OK, "USER2002", "스토리지 개수 조회가 완료되었습니다."),
+    _GET_READ_BOOKMARK_OK(HttpStatus.OK,"USER2003","총 북마크 개수와 읽은 북마크 개수 조회를 완료했습니다"),
 
     //도토리
     _GET_ACORNADD_HISTORY_OK(HttpStatus.OK,"ACORN2001", "도토리 적립 내역 조회가 완료되었습니다."),

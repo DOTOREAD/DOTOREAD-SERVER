@@ -28,4 +28,11 @@ public class UserConverter {
                 .ownAcorn(acorns)
                 .build();
     }
+
+    public static UserResponseDTO.ReadBookmark toReadBookmark(User user, Integer read) {
+        return UserResponseDTO.ReadBookmark.builder()
+                .readBookmark(read)
+                .bookmark(user.getBookmark())
+                .build();
+    }
 }
