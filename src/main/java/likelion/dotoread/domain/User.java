@@ -27,6 +27,9 @@ public class User extends BaseEntity {
     private Integer storageCount = 100;
     @Builder.Default
     private Integer acornCount = 0;
+    @Builder.Default
+    private Integer bookmark = 0;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarkList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
