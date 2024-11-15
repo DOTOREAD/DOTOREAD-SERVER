@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
+import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.enums.SortType;
 import likelion.dotoread.request.SaveBookmarkRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
@@ -70,5 +71,12 @@ public class BookmarkController {
     public ResponseEntity<Void> deleteBookmark(@PathVariable List<Long> bookmarkIds) {
         bookmarkIds.forEach(bookmarkService::deleteBookmark);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "fresh-article 조회 api", description = "fresh-article를 조회합니다. 최대 7개입니다.")
+    @GetMapping("/fresh-articles")
+    public ApiResponse<List<BookmarkDetailResponse>> getFresh(HttpServletRequest http){
+        List<BookmarkDetailResponse> response = bookmarkService.getFreshArticle(http);
+        return ApiResponse.of(SuccessStatus._GET_FRESH_OK, response);
     }
 }

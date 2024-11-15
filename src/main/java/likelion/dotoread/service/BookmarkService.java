@@ -190,4 +190,10 @@ public class BookmarkService {
         List<Bookmark> bookmarks = bookmarkRepository.findAllByUserAndFolderIsNull(user, sort);
         return BookmarkDetailResponse.from(bookmarks);
     }
+
+    public List<BookmarkDetailResponse> getFreshArticle(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        List<Bookmark> bookmarks = bookmarkRepository.findFreshArticle(user);
+        return BookmarkDetailResponse.from(bookmarks);
+    }
 }

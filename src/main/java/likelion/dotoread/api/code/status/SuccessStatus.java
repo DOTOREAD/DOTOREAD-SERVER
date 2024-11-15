@@ -35,6 +35,9 @@ public enum SuccessStatus implements BaseCode {
     _GET_ACORNADD_HISTORY_OK(HttpStatus.OK,"ACORN2001", "도토리 적립 내역 조회가 완료되었습니다."),
     _GET_ACORNUSE_HISTORY_OK(HttpStatus.OK,"ACORN2002", "도토리 사용 내역 조회가 완료되었습니다."),
 
+    //북마크
+    _GET_FRESH_OK(HttpStatus.OK, "ARTICLE2001", "FRESH ARTICLE 조회가 완료되었습니다."),
+    _GET_ROTTEN_OK(HttpStatus.OK, "ARTICLE2002", "ROTTEN ARTICLE 조회가 완료되었습니다."),
 
 
 

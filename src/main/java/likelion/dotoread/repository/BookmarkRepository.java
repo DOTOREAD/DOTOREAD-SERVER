@@ -40,4 +40,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     @Query("SELECT Count(*) FROM Bookmark b WHERE b.user = :user AND b.isVisited = true")
     Integer countAllByUserAndIsVisited(@Param("user") User user);
+    @Query("select b FROM Bookmark b WHERE b.user = :user order by b.createdAt DESC limit 7 ")
+    List<Bookmark> findFreshArticle(@Param("user") User user);
 }
