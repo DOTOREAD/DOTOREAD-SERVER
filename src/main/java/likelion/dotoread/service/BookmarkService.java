@@ -196,4 +196,13 @@ public class BookmarkService {
         List<Bookmark> bookmarks = bookmarkRepository.findFreshArticle(user);
         return BookmarkDetailResponse.from(bookmarks);
     }
+
+    public List<BookmarkDetailResponse> getRottenArticle(HttpServletRequest http) {
+        User user = userService.findUserByHttpServletRequest(http);
+        List<Bookmark> bookmarks = bookmarkRepository.findRottenArticle(user);
+        if(bookmarks.size() == 0) {
+            bookmarks = bookmarkRepository.findOldArticle(user);
+        }
+        return BookmarkDetailResponse.from(bookmarks);
+    }
 }

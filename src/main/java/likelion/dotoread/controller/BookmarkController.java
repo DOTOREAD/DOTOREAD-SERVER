@@ -79,4 +79,10 @@ public class BookmarkController {
         List<BookmarkDetailResponse> response = bookmarkService.getFreshArticle(http);
         return ApiResponse.of(SuccessStatus._GET_FRESH_OK, response);
     }
+    @Operation(summary = "rotten-article 조회 api", description = "rotten-article 7개를 조회합니다. rotten-article 0개라면 랜덤으로 오래된 article 7개를 조회합니다.")
+    @GetMapping("/rotten-articles")
+    public ApiResponse<List<BookmarkDetailResponse>> getRotten(HttpServletRequest http){
+        List<BookmarkDetailResponse> response = bookmarkService.getRottenArticle(http);
+        return ApiResponse.of(SuccessStatus._GET_ROTTEN_OK, response);
+    }
 }
