@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
+import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
@@ -109,7 +110,9 @@ public class BookmarkService {
 
     public Long saveBookmark(HttpServletRequest http, SaveBookmarkRequest request){
         User user = userService.findUserByHttpServletRequest(http);
-
+        if(user.getStorageCount()<=user.getBookmark()) {
+            throw new UserHandler(ErrorStatus._STORAGE_LACK);
+        }
         String title = crawlTitle(request.url());
         String img = crawlImage(request.url());
 
