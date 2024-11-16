@@ -2,6 +2,8 @@ package likelion.dotoread.repository;
 
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import likelion.dotoread.domain.Bookmark;
@@ -43,10 +45,13 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query("select b FROM Bookmark b WHERE b.user = :user order by b.createdAt DESC limit 7 ")
     List<Bookmark> findFreshArticle(@Param("user") User user);
 
-    @Query("select b FROM Bookmark b WHERE b.user = :user and b.isVisited = false order by b.createdAt limit 7 ")
+    @Query("select b FROM Bookmark b WHERE b.user = :user and b.isVisited = false order by b.createdAt ASC limit 7 ")
     List<Bookmark> findRottenArticle(@Param("user") User user);
 
-    @Query("select b FROM Bookmark b WHERE b.user = :user order by b.createdAt limit 7 ")
+    @Query("select b FROM Bookmark b WHERE b.user = :user order by b.createdAt ASC")
     List<Bookmark> findOldArticle(@Param("user") User user);
+
+    @Query("SELECT b FROM Bookmark b where b.user = :user and lower(b.title) Like lower(concat('%', :search, '%'))")
+    Page<Bookmark> findByUserAndTitleContaining(@Param("user") User user, @Param("search")String search, PageRequest pageRequest);
 
 }
