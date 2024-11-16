@@ -3,12 +3,16 @@ package likelion.dotoread.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import likelion.dotoread.api.ApiResponse;
+import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
+import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.enums.SortType;
 import likelion.dotoread.request.SaveBookmarkRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
 import likelion.dotoread.service.BookmarkService;
+import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,5 +88,14 @@ public class BookmarkController {
     public ApiResponse<List<BookmarkDetailResponse>> getRotten(HttpServletRequest http){
         List<BookmarkDetailResponse> response = bookmarkService.getRottenArticle(http);
         return ApiResponse.of(SuccessStatus._GET_ROTTEN_OK, response);
+    }
+    @Operation(summary = "북마크 검색 api", description = "북마크 검색 api 입니다. 검색 범위는 북마크 제목이며, 페이지 번호 1번이 1페이지입니다.")
+    @GetMapping
+    public ApiResponse<BookmarkResponseDTO.BookmarkDetailListDTO> searchBookmark(HttpServletRequest http, @PathParam("search") String search, @PathParam("page") Integer page){
+        if(search == null) {
+            throw new UserHandler(ErrorStatus._SEARCH_NONE);
+        }
+        BookmarkResponseDTO.BookmarkDetailListDTO response = bookmarkService.searchBookmark(http, search, page);
+        return ApiResponse.of(SuccessStatus._SEARCH_BOOKMARK_OK, response);
     }
 }

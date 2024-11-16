@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.api.exception.handler.UserHandler;
+import likelion.dotoread.converter.BookmarkConverter;
 import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
@@ -18,6 +19,9 @@ import likelion.dotoread.repository.UserMissionRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.request.SaveBookmarkRequest;
 import likelion.dotoread.response.BookmarkDetailResponse;
+import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -207,5 +211,11 @@ public class BookmarkService {
             bookmarks = bookmarkRepository.findOldArticle(user);
         }
         return BookmarkDetailResponse.from(bookmarks);
+    }
+    public BookmarkResponseDTO.BookmarkDetailListDTO searchBookmark(HttpServletRequest http, String search, Integer page) {
+        User user = userService.findUserByHttpServletRequest(http);
+        PageRequest pageRequest = PageRequest.of(page-1,10);
+        Page<Bookmark> bookmarks = bookmarkRepository.findByUserAndTitleContaining(user, search, pageRequest);
+        return BookmarkConverter.toBookmarkDetailListDTO(bookmarks);
     }
 }
