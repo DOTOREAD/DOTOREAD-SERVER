@@ -33,7 +33,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _ACORN_LACK(HttpStatus.BAD_REQUEST, "ACORN4001", "도토리가 부족합니다."),
 
     //스토리지
-    _STORAGE_LACK(HttpStatus.OK, "STORAGE4001", "스토리지가 부족합니다."),
+    _STORAGE_LACK(HttpStatus.BAD_REQUEST, "STORAGE4001", "스토리지가 부족합니다."),
+
+    //검색
+    _SEARCH_NONE(HttpStatus.BAD_REQUEST, "SEARCH4001", "검색어가 없습니다."),
 
 
 

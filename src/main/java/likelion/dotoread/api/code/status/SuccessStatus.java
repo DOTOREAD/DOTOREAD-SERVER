@@ -38,6 +38,7 @@ public enum SuccessStatus implements BaseCode {
     //북마크
     _GET_FRESH_OK(HttpStatus.OK, "ARTICLE2001", "FRESH ARTICLE 조회가 완료되었습니다."),
     _GET_ROTTEN_OK(HttpStatus.OK, "ARTICLE2002", "ROTTEN ARTICLE 조회가 완료되었습니다."),
+    _SEARCH_BOOKMARK_OK(HttpStatus.OK,"BOOKMARK2001", "북마크 검색이 완료되었습니다."),
 
 
 
