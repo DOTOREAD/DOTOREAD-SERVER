@@ -201,6 +201,9 @@ public class BookmarkService {
     public List<BookmarkDetailResponse> getFreshArticle(HttpServletRequest http) {
         User user = userService.findUserByHttpServletRequest(http);
         List<Bookmark> bookmarks = bookmarkRepository.findFreshArticle(user);
+        if(bookmarks.size() < 5) {
+            throw new UserHandler(ErrorStatus._ARTICLE_LACK);
+        }
         return BookmarkDetailResponse.from(bookmarks);
     }
 
