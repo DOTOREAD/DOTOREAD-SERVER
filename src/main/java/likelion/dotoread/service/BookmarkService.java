@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BookmarkService {
@@ -210,8 +211,16 @@ public class BookmarkService {
     public List<BookmarkDetailResponse> getRottenArticle(HttpServletRequest http) {
         User user = userService.findUserByHttpServletRequest(http);
         List<Bookmark> bookmarks = bookmarkRepository.findRottenArticle(user);
-        if(bookmarks.size() == 0) {
-            bookmarks = bookmarkRepository.findOldArticle(user);
+        if(bookmarks.size() < 5) {
+            List<Bookmark> additional = bookmarkRepository.findOldArticle(user).stream()
+                    .filter(b -> !bookmarks.contains(b))
+                    .limit(5 - bookmarks.size())
+                    .collect(Collectors.toList());
+
+            bookmarks.addAll(additional);
+        }
+        if(bookmarks.size() < 5) {
+            throw new UserHandler(ErrorStatus._ARTICLE_LACK);
         }
         return BookmarkDetailResponse.from(bookmarks);
     }
