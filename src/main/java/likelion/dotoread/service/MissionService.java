@@ -40,7 +40,7 @@ public class MissionService {
     }
 
     public List<MissionResponseDTO.UserMissionDTO> getUserMissions(User user) {
-        List<UserMission> userMissionList = userMissionRepository.findAll();
+        List<UserMission> userMissionList = userMissionRepository.findAllByUser(user);
         List<MissionResponseDTO.UserMissionDTO> result = MissionConverter.toUserMissionDTOList(userMissionList);
         return result;
     }
