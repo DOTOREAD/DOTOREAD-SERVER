@@ -9,10 +9,8 @@ import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Collection;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.domain.mapping.CollectionBookmark;
-import likelion.dotoread.repository.BookmarkRepository;
-import likelion.dotoread.repository.CollectionBookmarkRepository;
-import likelion.dotoread.repository.CollectionLikeRepository;
-import likelion.dotoread.repository.CollectionRepository;
+import likelion.dotoread.domain.mapping.UserMission;
+import likelion.dotoread.repository.*;
 import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionRequestDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionResponseDTO;
@@ -34,6 +32,8 @@ public class CollectionService {
     private final BookmarkRepository bookmarkRepository;
     private final CollectionLikeRepository collectionLikeRepository;
     private final CollectionBookmarkRepository collectionBookmarkRepository;
+    private final UserMissionRepository userMissionRepository;
+    private final MissionService missionService;
 
     public void createCollection(HttpServletRequest http, CollectionRequestDTO.CollectionDTO request) {
         User user = userService.findUserByHttpServletRequest(http);
@@ -43,6 +43,10 @@ public class CollectionService {
                 .map(bookmark -> CollectionConverter.toCollectionBookmark(collection, bookmark)).collect(Collectors.toList());
         collection.setCollectionBookmarks(collectionBookmarkList);
         collectionRepository.save(collection);
+        UserMission userMission = userMissionRepository.findByUserAndMissionId(user, 3L);
+        userMission.setCurrent();
+        userMissionRepository.save(userMission);
+        missionService.missionUpdate(userMission);
     }
 
     public CollectionResponseDTO.CollectionDetailDTO getDetailCollection(HttpServletRequest http, Long collectionId) {
