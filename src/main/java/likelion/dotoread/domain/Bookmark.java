@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
 import likelion.dotoread.domain.enums.Rating;
+import likelion.dotoread.domain.mapping.CollectionBookmark;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,7 +37,6 @@ public class Bookmark extends BaseEntity {
     @JoinColumn(name = "folder_id")
     @JsonIgnore
     private Folder folder;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collection_id")
-    private Collection collection;
+    @OneToMany(mappedBy = "bookmark", cascade = CascadeType.ALL)
+    private List<CollectionBookmark> collectionBookmarks = new ArrayList<>();
 }
