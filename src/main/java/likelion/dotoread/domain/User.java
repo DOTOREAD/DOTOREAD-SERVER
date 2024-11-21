@@ -2,6 +2,7 @@ package likelion.dotoread.domain;
 
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
+import likelion.dotoread.domain.mapping.CollectionLike;
 import likelion.dotoread.domain.mapping.UserMission;
 import lombok.*;
 
@@ -40,6 +41,10 @@ public class User extends BaseEntity {
     private List<UserMission> userMissionList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AcornAdd> acronAddList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Collection> collectionList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CollectionLike> likeList = new ArrayList<>();
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }

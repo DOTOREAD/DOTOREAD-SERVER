@@ -1,6 +1,5 @@
 package likelion.dotoread.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
@@ -35,4 +34,7 @@ public class Bookmark extends BaseEntity {
     @JoinColumn(name = "folder_id")
     @JsonIgnore
     private Folder folder;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
 }
