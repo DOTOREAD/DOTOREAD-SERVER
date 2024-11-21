@@ -37,4 +37,12 @@ public class BookmarkConverter {
                 .title(bookmark.getTitle())
                 .build();
     }
+
+    public static BookmarkResponseDTO.BookmarkSummaryDTO toBookmarkSummaryDTO(Bookmark bookmark) {
+        return BookmarkResponseDTO.BookmarkSummaryDTO.builder()
+                .bookmarkId(bookmark.getId())
+                .url(bookmark.getUrl())
+                .title(bookmark.getTitle())
+                .build();
+    }
 }

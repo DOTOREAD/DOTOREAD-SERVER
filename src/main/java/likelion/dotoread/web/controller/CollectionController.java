@@ -6,6 +6,7 @@ import likelion.dotoread.api.ApiResponse;
 import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.service.CollectionService;
 import likelion.dotoread.web.dto.CollectionDto.CollectionRequestDTO;
+import likelion.dotoread.web.dto.CollectionDto.CollectionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,4 +21,11 @@ public class CollectionController {
         collectionService.createCollection(http, request);
         return ApiResponse.of(SuccessStatus._COLLECTION_CREATE_OK, null);
     }
+    @GetMapping("/collections/{collectionId}")
+    @Operation(summary = "글 상세 조회 api", description = "하나의 글을 상세 조회하는 api입니다.")
+    public ApiResponse<CollectionResponseDTO.CollectionDetailDTO> getDetailCollection(HttpServletRequest http, @PathVariable Long collectionId) {
+        CollectionResponseDTO.CollectionDetailDTO response = collectionService.getDetailCollection(http, collectionId);
+        return ApiResponse.of(SuccessStatus._GET_COLLECTION_,response);
+    }
+
 }
