@@ -42,4 +42,12 @@ public class CollectionController {
         return ApiResponse.of(SuccessStatus._DELETE_COLLECTION_OK, null);
     }
 
+    @PatchMapping("/collections/{collectionId}")
+    @Operation(summary = "글(컬렉션) 수정 api", description = "하나의 글(컬렉션)을 수정하는 api입니다.")
+    public ApiResponse patchCollection(HttpServletRequest http, @PathVariable Long collectionId, @RequestBody CollectionRequestDTO.CollectionDTO request) {
+        collectionService.patchCollection(http,collectionId, request);
+        return ApiResponse.of(SuccessStatus._PATCH_COLLECTION_OK, null);
+    }
+
+
 }

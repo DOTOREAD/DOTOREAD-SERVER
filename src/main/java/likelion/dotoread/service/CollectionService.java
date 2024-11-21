@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,6 +72,29 @@ public class CollectionService {
             throw new UserHandler(ErrorStatus._COLLECTION_DELETE_REJECT);
         }
         collectionRepository.delete(collection);
+    }
+    @Transactional
+    public void patchCollection(HttpServletRequest http, Long collectionId, CollectionRequestDTO.CollectionDTO request) {
+        User user = userService.findUserByHttpServletRequest(http);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(()->new UserHandler(ErrorStatus._COLLECTION_NOT_FOUND));
+        if(!collection.getUser().getId().equals(user.getId())) {
+            throw new UserHandler(ErrorStatus._COLLECTION_DELETE_REJECT);
+        }
+        if(request.getBookmarkIds() != null && !request.getBookmarkIds().isEmpty()) {
+            collectionBookmarkRepository.deleteAllByCollection(collection);
+            List<Bookmark> bookmarks = bookmarkRepository.findAllByIdIn(request.getBookmarkIds());
+            List<CollectionBookmark> collectionBookmarkList = bookmarks.stream()
+                    .map(bookmark -> CollectionConverter.toCollectionBookmark(collection, bookmark)).collect(Collectors.toList());
+            collection.setCollectionBookmarks(collectionBookmarkList);
+        }
+        if(request.getMemo() != null && !request.getMemo().isEmpty()) {
+            collection.setMemo(request.getMemo());
+        }
+        if(request.getTitle() != null && !request.getTitle().isEmpty()) {
+            collection.setTitle(request.getTitle());
+        }
+        collectionRepository.save(collection);
     }
 
 }
