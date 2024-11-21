@@ -35,4 +35,11 @@ public class CollectionController {
         return ApiResponse.of(SuccessStatus._GET_LIST_COLLECTION_OK, response);
     }
 
+    @DeleteMapping("/collections/{collectionId}")
+    @Operation(summary = "글(컬렉션) 삭제 api", description = "하나의 글(컬렉션)을 삭제하는 api입니다.")
+    public ApiResponse deleteCollection(HttpServletRequest http, @PathVariable Long collectionId) {
+        collectionService.deleteCollection(http, collectionId);
+        return ApiResponse.of(SuccessStatus._DELETE_COLLECTION_OK, null);
+    }
+
 }

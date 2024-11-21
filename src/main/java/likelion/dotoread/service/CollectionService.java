@@ -63,4 +63,14 @@ public class CollectionService {
         return collectionPreviewListDTO;
     }
 
+    public void deleteCollection(HttpServletRequest http, Long collectionId) {
+        User user = userService.findUserByHttpServletRequest(http);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(()->new UserHandler(ErrorStatus._COLLECTION_NOT_FOUND));
+        if(!collection.getUser().getId().equals(user.getId())) {
+            throw new UserHandler(ErrorStatus._COLLECTION_DELETE_REJECT);
+        }
+        collectionRepository.delete(collection);
+    }
+
 }
