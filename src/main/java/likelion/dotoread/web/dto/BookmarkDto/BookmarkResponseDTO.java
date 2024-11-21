@@ -36,4 +36,14 @@ public class BookmarkResponseDTO {
         LocalDateTime createdAt;
         FolderDTO folder;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class BookmarkSummaryDTO {
+        Long bookmarkId;
+        String title;
+        String url;
+    }
 }

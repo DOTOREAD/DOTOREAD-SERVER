@@ -54,4 +54,5 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query("SELECT b FROM Bookmark b where b.user = :user and lower(b.title) Like lower(concat('%', :search, '%'))")
     Page<Bookmark> findByUserAndTitleContaining(@Param("user") User user, @Param("search")String search, PageRequest pageRequest);
 
+    List<Bookmark> findAllByIdIn(List<Long> ids);
 }

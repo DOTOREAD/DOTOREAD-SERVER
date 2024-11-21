@@ -2,6 +2,7 @@ package likelion.dotoread.domain;
 
 import jakarta.persistence.*;
 import likelion.dotoread.domain.common.BaseEntity;
+import likelion.dotoread.domain.mapping.CollectionBookmark;
 import likelion.dotoread.domain.mapping.CollectionLike;
 import lombok.*;
 
@@ -28,7 +29,7 @@ public class Collection extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarkList = new ArrayList<>();
+    private List<CollectionBookmark> collectionBookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
     private List<CollectionLike> likeList = new ArrayList<>();

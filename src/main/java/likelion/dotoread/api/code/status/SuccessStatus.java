@@ -40,6 +40,15 @@ public enum SuccessStatus implements BaseCode {
     _GET_ROTTEN_OK(HttpStatus.OK, "ARTICLE2002", "ROTTEN ARTICLE 조회가 완료되었습니다."),
     _SEARCH_BOOKMARK_OK(HttpStatus.OK,"BOOKMARK2001", "북마크 검색이 완료되었습니다."),
 
+    //컬렉션
+    _COLLECTION_CREATE_OK(HttpStatus.OK, "COLLECTION2001", "새 글 작성이 완료되었습니다."),
+    _GET_COLLECTION_(HttpStatus.OK, "COLLECTION2002", "글 상세조회가 완료되었습니다."),
+    _GET_LIST_COLLECTION_OK(HttpStatus.OK, "COLLECTION2003", "전체 글(컬렉션) 목록 조회가 완료되었습니다."),
+    _DELETE_COLLECTION_OK(HttpStatus.OK, "COLLECTION2004", "글(컬렉션) 삭제가 완료되었습니다."),
+    _PATCH_COLLECTION_OK(HttpStatus.OK, "COLLECTION2004", "글(컬렉션) 수정 완료되었습니다."),
+
+
+
 
 
     ;
