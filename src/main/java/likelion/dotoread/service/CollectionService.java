@@ -17,6 +17,8 @@ import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionRequestDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,6 +54,13 @@ public class CollectionService {
                 .map(bookmark -> BookmarkConverter.toBookmarkSummaryDTO(bookmark)).collect(Collectors.toList());
         CollectionResponseDTO.CollectionDetailDTO collectionDetailDTO = CollectionConverter.toCollectionDetailDTO(collection,isLiked,bookmarkSummaryDTOList);
         return collectionDetailDTO;
+    }
+
+    public CollectionResponseDTO.CollectionPreviewListDTO getCollectionPreviewList(HttpServletRequest http, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
+        Page<Collection> collections = collectionRepository.findAll(pageRequest);
+        CollectionResponseDTO.CollectionPreviewListDTO collectionPreviewListDTO = CollectionConverter.toCollectionPreviewListDTO(collections);
+        return collectionPreviewListDTO;
     }
 
 }

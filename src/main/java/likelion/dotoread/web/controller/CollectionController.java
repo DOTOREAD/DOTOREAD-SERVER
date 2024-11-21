@@ -28,4 +28,11 @@ public class CollectionController {
         return ApiResponse.of(SuccessStatus._GET_COLLECTION_,response);
     }
 
+    @GetMapping("/collections")
+    @Operation(summary = "전체 글(컬렉션) 목록 조회 api", description = "전체 글 목록을 상세 조회하는 api입니다. 페이지 번호를 주세요. 페이지 번호 1번이 1페이지 입니다.")
+    public ApiResponse<CollectionResponseDTO.CollectionPreviewListDTO> getCollectionList(HttpServletRequest http, @RequestParam(name = "page") Integer page) {
+        CollectionResponseDTO.CollectionPreviewListDTO response = collectionService.getCollectionPreviewList(http, page);
+        return ApiResponse.of(SuccessStatus._GET_LIST_COLLECTION_OK, response);
+    }
+
 }

@@ -14,6 +14,31 @@ public class CollectionResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    public static class CollectionPreviewListDTO {
+        List<CollectionPreviewDTO> collectionPreviewDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class CollectionPreviewDTO {
+        Long collectionId;
+        String nickname;
+        LocalDate createdAt;
+        String title;
+        String memo;
+        List<BookmarkResponseDTO.BookmarkSummaryDTO> bookmarkSummaryDTOList;
+    }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class CollectionDetailDTO {
         Long collectionId;
         String nickname;
