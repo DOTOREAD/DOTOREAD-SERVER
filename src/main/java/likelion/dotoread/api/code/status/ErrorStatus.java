@@ -40,7 +40,8 @@ public enum ErrorStatus implements BaseErrorCode {
     _ARTICLE_LACK(HttpStatus.BAD_REQUEST, "ARTICLE4001", "아티클 부족(5개 미만)입니다."),
 
     //컬렉션
-    _COLLECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "COLLECTION4001", "글(컬렉션)이 없습니다.")
+    _COLLECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "COLLECTION4001", "글(컬렉션)이 없습니다."),
+    _COLLECTION_DELETE_REJECT(HttpStatus.BAD_REQUEST, "COLLECTION4002", "본인이 작성한 글이 아닙니다."),
 
 
 
