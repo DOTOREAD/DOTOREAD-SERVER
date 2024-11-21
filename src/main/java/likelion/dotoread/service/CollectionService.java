@@ -58,6 +58,12 @@ public class CollectionService {
         List<BookmarkResponseDTO.BookmarkSummaryDTO> bookmarkSummaryDTOList = bookmarks.stream()
                 .map(bookmark -> BookmarkConverter.toBookmarkSummaryDTO(bookmark)).collect(Collectors.toList());
         CollectionResponseDTO.CollectionDetailDTO collectionDetailDTO = CollectionConverter.toCollectionDetailDTO(collection,isLiked,bookmarkSummaryDTOList);
+        if(!collection.getUser().getId().equals(user.getId())) {
+            UserMission userMission = userMissionRepository.findByUserAndMissionId(user, 4L);
+            userMission.setCurrent();
+            userMissionRepository.save(userMission);
+            missionService.missionUpdate(userMission);
+        }
         return collectionDetailDTO;
     }
 
