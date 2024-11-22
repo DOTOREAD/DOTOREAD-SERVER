@@ -1,4 +1,4 @@
-package likelion.dotoread.dto;
+package likelion.dotoread.web.dto.FolderDto;
 
 import likelion.dotoread.domain.Folder;
 

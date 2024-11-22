@@ -6,7 +6,7 @@ import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
-import likelion.dotoread.dto.FolderDTO;
+import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
 import likelion.dotoread.request.SaveFolderRequest;

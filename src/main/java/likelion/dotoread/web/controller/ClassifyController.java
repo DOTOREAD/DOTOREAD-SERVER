@@ -1,4 +1,4 @@
-package likelion.dotoread.controller;
+package likelion.dotoread.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;

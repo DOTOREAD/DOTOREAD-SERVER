@@ -1,10 +1,10 @@
-package likelion.dotoread.controller;
+package likelion.dotoread.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
-import likelion.dotoread.dto.FolderDTO;
+import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 import likelion.dotoread.request.SaveFolderRequest;
 import likelion.dotoread.service.FolderService;
 import org.springframework.http.ResponseEntity;
