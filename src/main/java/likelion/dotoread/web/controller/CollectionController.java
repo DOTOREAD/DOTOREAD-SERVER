@@ -70,11 +70,11 @@ public class CollectionController {
 
     @Operation(summary = "글(컬렉션) 검색 api", description = "컬렉션 검색 api 입니다. 검색 범위는 컬렉션 제목이며, 페이지 번호 1번이 1페이지입니다.")
     @GetMapping("/collections/search")
-    public ApiResponse<CollectionResponseDTO.CollectionPreviewListDTO> searchCollection(HttpServletRequest http, @PathParam("search") String search, @PathParam("page") Integer page){
+    public ApiResponse<CollectionResponseDTO.CollectionPreviewListDTO> searchCollection(@PathParam("search") String search, @PathParam("page") Integer page){
         if(search == null) {
             throw new UserHandler(ErrorStatus._SEARCH_NONE);
         }
-        CollectionResponseDTO.CollectionPreviewListDTO response = collectionService.searchCollection(http, search, page);
+        CollectionResponseDTO.CollectionPreviewListDTO response = collectionService.searchCollection(search, page);
         return ApiResponse.of(SuccessStatus._SEARCH_COLLECTION_OK, response);
     }
 

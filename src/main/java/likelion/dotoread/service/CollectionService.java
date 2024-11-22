@@ -140,8 +140,7 @@ public class CollectionService {
         collectionRepository.save(collection);
     }
 
-    public CollectionResponseDTO.CollectionPreviewListDTO searchCollection(HttpServletRequest http, String search, Integer page) {
-        User user = userService.findUserByHttpServletRequest(http);
+    public CollectionResponseDTO.CollectionPreviewListDTO searchCollection(String search, Integer page) {
         PageRequest pageRequest = PageRequest.of(page-1,10);
         Page<Collection> collections = collectionRepository.findByTitleContaining(search, pageRequest);
         return CollectionConverter.toCollectionPreviewListDTO(collections);
