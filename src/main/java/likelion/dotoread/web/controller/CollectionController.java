@@ -57,24 +57,31 @@ public class CollectionController {
 
     @PostMapping("/collections/like/{collectionId}")
     @Operation(summary = "글(컬렉션) 좋아요 api", description = "글(컬렉션)에 좋아요를 누를 수 있습니다.")
-    public ResponseEntity<Void> postCollectionLike(HttpServletRequest http, @PathVariable Long collectionId) {
+    public ApiResponse postCollectionLike(HttpServletRequest http, @PathVariable Long collectionId) {
         collectionService.createCollectionLike(http, collectionId);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.of(SuccessStatus._POST_COLLECTION_LIKE_OK, null);
     }
     @DeleteMapping("/collections/like/{collectionId}")
     @Operation(summary = "글(컬렉션) 좋아요 취소 api", description = "글(컬렉션)에 좋아요를 취소할 수 있습니다.")
-    public ResponseEntity<Void> deleteCollectionLike(HttpServletRequest http, @PathVariable Long collectionId) {
+    public ApiResponse deleteCollectionLike(HttpServletRequest http, @PathVariable Long collectionId) {
         collectionService.deleteCollectionLike(http, collectionId);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.of(SuccessStatus._DELETE_COLLECTION_LIKE_OK, null);
     }
 
     @Operation(summary = "글(컬렉션) 검색 api", description = "컬렉션 검색 api 입니다. 검색 범위는 컬렉션 제목이며, 페이지 번호 1번이 1페이지입니다.")
     @GetMapping("/collections/search")
-    public ApiResponse<CollectionResponseDTO.CollectionPreviewListDTO> searchBookmark(HttpServletRequest http, @PathParam("search") String search, @PathParam("page") Integer page){
+    public ApiResponse<CollectionResponseDTO.CollectionPreviewListDTO> searchCollection(HttpServletRequest http, @PathParam("search") String search, @PathParam("page") Integer page){
         if(search == null) {
             throw new UserHandler(ErrorStatus._SEARCH_NONE);
         }
         CollectionResponseDTO.CollectionPreviewListDTO response = collectionService.searchCollection(http, search, page);
         return ApiResponse.of(SuccessStatus._SEARCH_COLLECTION_OK, response);
+    }
+
+    @Operation(summary = "글(컬렉션) 내 북마크로 옮기기 api", description = "다른 사람의 글(컬렉션)에 있는 북마크를 내 북마크로 옮길 수 있습니다.")
+    @PostMapping("/collections/clone/{bookmarkId}")
+    public ApiResponse cloneBookmark(HttpServletRequest http, @PathVariable Long bookmarkId){
+        collectionService.cloneBookmark(http, bookmarkId);
+        return ApiResponse.of(SuccessStatus._CLONE_COLLECTION_OK, null);
     }
 }
