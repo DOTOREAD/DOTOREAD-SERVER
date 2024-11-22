@@ -9,7 +9,7 @@ import likelion.dotoread.domain.User;
 import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
-import likelion.dotoread.request.SaveFolderRequest;
+import likelion.dotoread.web.request.SaveFolderRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

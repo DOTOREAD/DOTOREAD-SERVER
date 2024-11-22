@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
 import likelion.dotoread.web.dto.FolderDto.FolderDTO;
-import likelion.dotoread.request.SaveFolderRequest;
+import likelion.dotoread.web.request.SaveFolderRequest;
 import likelion.dotoread.service.FolderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

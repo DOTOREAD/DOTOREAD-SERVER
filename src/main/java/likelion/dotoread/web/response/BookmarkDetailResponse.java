@@ -1,4 +1,4 @@
-package likelion.dotoread.response;
+package likelion.dotoread.web.response;
 
 import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
