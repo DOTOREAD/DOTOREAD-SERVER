@@ -137,4 +137,11 @@ public class CollectionService {
         collection.setLikeCount(Math.max(0, collection.getLikeCount() - 1));
         collectionRepository.save(collection);
     }
+
+    public CollectionResponseDTO.CollectionPreviewListDTO searchCollection(HttpServletRequest http, String search, Integer page) {
+        User user = userService.findUserByHttpServletRequest(http);
+        PageRequest pageRequest = PageRequest.of(page-1,10);
+        Page<Collection> collections = collectionRepository.findByTitleContaining(search, pageRequest);
+        return CollectionConverter.toCollectionPreviewListDTO(collections);
+    }
 }
