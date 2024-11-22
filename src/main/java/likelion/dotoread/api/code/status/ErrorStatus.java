@@ -42,6 +42,7 @@ public enum ErrorStatus implements BaseErrorCode {
     //컬렉션
     _COLLECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "COLLECTION4001", "글(컬렉션)이 없습니다."),
     _COLLECTION_DELETE_REJECT(HttpStatus.BAD_REQUEST, "COLLECTION4002", "본인이 작성한 글이 아닙니다."),
+    _ALREADY_LIKED(HttpStatus.BAD_REQUEST, "COLLECTION4003", "이미 좋아요를 누른 컬렉션입니다.")
 
 
 

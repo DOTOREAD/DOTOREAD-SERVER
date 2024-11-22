@@ -9,6 +9,7 @@ import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Collection;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.domain.mapping.CollectionBookmark;
+import likelion.dotoread.domain.mapping.CollectionLike;
 import likelion.dotoread.domain.mapping.UserMission;
 import likelion.dotoread.repository.*;
 import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
@@ -107,4 +108,33 @@ public class CollectionService {
         collectionRepository.save(collection);
     }
 
+    public void createCollectionLike(HttpServletRequest http, Long collectionId){
+        User user = userService.findUserByHttpServletRequest(http);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(()->new UserHandler(ErrorStatus._COLLECTION_NOT_FOUND));
+
+        if (collectionLikeRepository.existsByCollectionAndUser(collection, user)) {
+            throw new UserHandler(ErrorStatus._ALREADY_LIKED);
+        }
+
+        CollectionLike collectionLike = CollectionLike.builder()
+                .collection(collection)
+                .user(user)
+                .build();
+        collectionLikeRepository.save(collectionLike);
+
+        collection.setLikeCount(collection.getLikeCount() + 1);
+        collectionRepository.save(collection);
+    }
+
+    public void deleteCollectionLike(HttpServletRequest http, Long collectionId){
+        User user = userService.findUserByHttpServletRequest(http);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(()->new UserHandler(ErrorStatus._COLLECTION_NOT_FOUND));
+        CollectionLike collectionLike = collectionLikeRepository.findByCollectionAndUser(collection, user);
+        collectionLikeRepository.delete(collectionLike);
+
+        collection.setLikeCount(Math.max(0, collection.getLikeCount() - 1));
+        collectionRepository.save(collection);
+    }
 }

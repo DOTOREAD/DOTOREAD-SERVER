@@ -2,12 +2,18 @@ package likelion.dotoread.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.PathParam;
 import likelion.dotoread.api.ApiResponse;
+import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
+import likelion.dotoread.api.exception.handler.UserHandler;
+import likelion.dotoread.domain.Collection;
 import likelion.dotoread.service.CollectionService;
+import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionRequestDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,5 +55,26 @@ public class CollectionController {
         return ApiResponse.of(SuccessStatus._PATCH_COLLECTION_OK, null);
     }
 
+    @PostMapping("/collections/like/{collectionId}")
+    @Operation(summary = "글(컬렉션) 좋아요 api", description = "글(컬렉션)에 좋아요를 누를 수 있습니다.")
+    public ResponseEntity<Void> postCollectionLike(HttpServletRequest http, @PathVariable Long collectionId) {
+        collectionService.createCollectionLike(http, collectionId);
+        return ResponseEntity.noContent().build();
+    }
+    @DeleteMapping("/collections/like/{collectionId}")
+    @Operation(summary = "글(컬렉션) 좋아요 취소 api", description = "글(컬렉션)에 좋아요를 취소할 수 있습니다.")
+    public ResponseEntity<Void> deleteCollectionLike(HttpServletRequest http, @PathVariable Long collectionId) {
+        collectionService.deleteCollectionLike(http, collectionId);
+        return ResponseEntity.noContent().build();
+    }
 
+    /*@Operation(summary = "글(컬렉션) 검색 api", description = "컬렉션 검색 api 입니다. 검색 범위는 컬렉션 제목이며, 페이지 번호 1번이 1페이지입니다.")
+    @GetMapping("/collections/search")
+    public ApiResponse<CollectionResponseDTO.CollectionDetailListDTO> searchBookmark(HttpServletRequest http, @PathParam("search") String search, @PathParam("page") Integer page){
+        if(search == null) {
+            throw new UserHandler(ErrorStatus._SEARCH_NONE);
+        }
+        CollectionResponseDTO.CollectionDetailListDTO response = collectionService.searchCollection(http, search, page);
+        return ApiResponse.of(SuccessStatus._SEARCH_BOOKMARK_OK, response);
+    }*/
 }
