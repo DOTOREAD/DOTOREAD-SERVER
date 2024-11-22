@@ -1,4 +1,4 @@
-package likelion.dotoread.response;
+package likelion.dotoread.web.response;
 
 import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import likelion.dotoread.dto.FolderDTO;
+import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 
 public record BookmarkDetailResponse(Long bookmarkId, String title,
                                      String url, String img, String createdAt, FolderDTO folder) {

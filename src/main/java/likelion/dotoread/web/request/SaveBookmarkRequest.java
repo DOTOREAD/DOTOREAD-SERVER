@@ -1,4 +1,4 @@
-package likelion.dotoread.request;
+package likelion.dotoread.web.request;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,6 +1,6 @@
 package likelion.dotoread.web.dto.BookmarkDto;
 
-import likelion.dotoread.dto.FolderDTO;
+import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

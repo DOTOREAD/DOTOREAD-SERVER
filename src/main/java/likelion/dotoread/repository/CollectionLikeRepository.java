@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CollectionLikeRepository extends JpaRepository<CollectionLike, Long> {
     Boolean existsByUserAndCollection(User user, Collection collection);
+
+    CollectionLike findByCollectionAndUser(Collection collection, User user);
+
+    Boolean existsByCollectionAndUser(Collection collection, User user);
 }

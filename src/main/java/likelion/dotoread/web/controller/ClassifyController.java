@@ -1,11 +1,11 @@
-package likelion.dotoread.controller;
+package likelion.dotoread.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import likelion.dotoread.api.ApiResponse;
-import likelion.dotoread.request.ClassifyRequest;
-import likelion.dotoread.response.BookmarkDetailResponse;
+import likelion.dotoread.web.request.ClassifyRequest;
+import likelion.dotoread.web.response.BookmarkDetailResponse;
 import likelion.dotoread.service.BookmarkService;
 import likelion.dotoread.service.ClassifyService;
 import org.springframework.http.ResponseEntity;

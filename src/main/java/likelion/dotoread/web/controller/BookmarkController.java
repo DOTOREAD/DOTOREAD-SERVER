@@ -1,4 +1,4 @@
-package likelion.dotoread.controller;
+package likelion.dotoread.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,8 +9,8 @@ import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.enums.SortType;
-import likelion.dotoread.request.SaveBookmarkRequest;
-import likelion.dotoread.response.BookmarkDetailResponse;
+import likelion.dotoread.web.request.SaveBookmarkRequest;
+import likelion.dotoread.web.response.BookmarkDetailResponse;
 import likelion.dotoread.service.BookmarkService;
 import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import org.springframework.http.ResponseEntity;

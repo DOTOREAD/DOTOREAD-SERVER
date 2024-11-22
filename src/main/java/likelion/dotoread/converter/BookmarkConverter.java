@@ -1,7 +1,7 @@
 package likelion.dotoread.converter;
 
 import likelion.dotoread.domain.Bookmark;
-import likelion.dotoread.dto.FolderDTO;
+import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import org.springframework.data.domain.Page;
 
