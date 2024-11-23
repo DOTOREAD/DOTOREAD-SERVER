@@ -1,4 +1,4 @@
-package likelion.dotoread.enums;
+package likelion.dotoread.domain.enums;
 import java.util.Arrays;
 
 public enum SortType {

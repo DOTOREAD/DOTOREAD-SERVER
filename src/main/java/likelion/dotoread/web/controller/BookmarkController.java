@@ -8,7 +8,7 @@ import likelion.dotoread.api.ApiResponse;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.api.exception.handler.UserHandler;
-import likelion.dotoread.enums.SortType;
+import likelion.dotoread.domain.enums.SortType;
 import likelion.dotoread.web.request.SaveBookmarkRequest;
 import likelion.dotoread.web.response.BookmarkDetailResponse;
 import likelion.dotoread.service.BookmarkService;

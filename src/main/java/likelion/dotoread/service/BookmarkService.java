@@ -12,7 +12,7 @@ import likelion.dotoread.domain.Bookmark;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
 import likelion.dotoread.domain.mapping.UserMission;
-import likelion.dotoread.enums.SortType;
+import likelion.dotoread.domain.enums.SortType;
 import likelion.dotoread.repository.BookmarkRepository;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserMissionRepository;
