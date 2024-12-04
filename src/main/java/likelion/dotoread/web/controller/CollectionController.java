@@ -7,13 +7,11 @@ import likelion.dotoread.api.ApiResponse;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.api.exception.handler.UserHandler;
-import likelion.dotoread.domain.Collection;
 import likelion.dotoread.service.CollectionService;
 import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionRequestDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,12 +19,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1")
 public class CollectionController {
     private final CollectionService collectionService;
+
     @PostMapping("/collections")
-    @Operation(summary = "새 글 작성 api", description = "새 글을 작성하는 api 입니다.")
-    public ApiResponse postCollection(HttpServletRequest http, @RequestBody CollectionRequestDTO.CollectionDTO request) {
-        collectionService.createCollection(http, request);
-        return ApiResponse.of(SuccessStatus._COLLECTION_CREATE_OK, null);
+    @Operation(summary = "새 글에 북마크 추가 api", description = "새 글을 작성하기 위해 북마크를 추가하는 api 입니다.")
+    public ApiResponse postTempCollection(HttpServletRequest http, @RequestBody CollectionRequestDTO.CollectionTempDTO request) {
+        Long collectionId = collectionService.createTempCollection(http, request);
+        return ApiResponse.of(SuccessStatus._COLLECTION_CREATE_TEMP_OK, collectionId);
     }
+
+    @PatchMapping("/collections/{collectionId}")
+    @Operation(summary = "새 글 작성 api", description = "새 글을 작성하는 api 입니다.")
+    public ApiResponse postCollection(HttpServletRequest http, @PathVariable Long collectionId, @RequestBody CollectionRequestDTO.CollectionCreateDTO request) {
+        collectionService.createCollection(http, collectionId, request);
+        return ApiResponse.of(SuccessStatus._COLLECTION_CREATE_OK, null); //update로 바꾸자
+    }
+
+    @GetMapping("/collections/bookmarks/{collectionId}")
+    @Operation(summary = "글 작성용 북마크 목록 조회 api", description = "글을 작성할 때 북마크 목록을 조회하는 api입니다.")
+    public ApiResponse<BookmarkResponseDTO.BookmarkSummaryListDTO> getCollectionList(HttpServletRequest http, @PathVariable Long collectionId, @RequestParam(name = "page") Integer page) {
+        BookmarkResponseDTO.BookmarkSummaryListDTO response = collectionService.getCollectionBookmarkList(http, collectionId, page);
+        return ApiResponse.of(SuccessStatus._GET_COLLECTION_BOOKMARKS_OK, response);
+    }
+
     @GetMapping("/collections/{collectionId}")
     @Operation(summary = "글 상세 조회 api", description = "하나의 글을 상세 조회하는 api입니다.")
     public ApiResponse<CollectionResponseDTO.CollectionDetailDTO> getDetailCollection(HttpServletRequest http, @PathVariable Long collectionId) {
@@ -48,7 +62,7 @@ public class CollectionController {
         return ApiResponse.of(SuccessStatus._DELETE_COLLECTION_OK, null);
     }
 
-    @PatchMapping("/collections/{collectionId}")
+    @PatchMapping("/collections/patch/{collectionId}")
     @Operation(summary = "글(컬렉션) 수정 api", description = "하나의 글(컬렉션)을 수정하는 api입니다.")
     public ApiResponse patchCollection(HttpServletRequest http, @PathVariable Long collectionId, @RequestBody CollectionRequestDTO.CollectionDTO request) {
         collectionService.patchCollection(http,collectionId, request);

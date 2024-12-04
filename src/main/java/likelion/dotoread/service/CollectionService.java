@@ -21,9 +21,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -38,18 +38,37 @@ public class CollectionService {
     private final UserMissionRepository userMissionRepository;
     private final MissionService missionService;
 
-    public void createCollection(HttpServletRequest http, CollectionRequestDTO.CollectionDTO request) {
+    public Long createTempCollection(HttpServletRequest http, CollectionRequestDTO.CollectionTempDTO request) {
         User user = userService.findUserByHttpServletRequest(http);
-        Collection collection = collectionRepository.save(CollectionConverter.toCollection(user, request));
+        Collection collection = collectionRepository.save(CollectionConverter.toTempCollection(user, request));
         List<Bookmark> bookmarks = bookmarkRepository.findAllByIdIn(request.getBookmarkIds());
         List<CollectionBookmark> collectionBookmarkList = bookmarks.stream()
-                .map(bookmark -> CollectionConverter.toCollectionBookmark(collection, bookmark)).collect(Collectors.toList());
+                .map(bookmark -> CollectionConverter.toCollectionBookmark(collection, bookmark))
+                .collect(Collectors.toList());
         collection.setCollectionBookmarks(collectionBookmarkList);
+        collectionRepository.save(collection);
+        return collection.getId();
+    }
+
+    public void createCollection(HttpServletRequest http, Long collectionId, CollectionRequestDTO.CollectionCreateDTO request) {
+        User user = userService.findUserByHttpServletRequest(http);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus._COLLECTION_NOT_FOUND));
+        CollectionConverter.updateCollectionFromDTO(collection, request);
         collectionRepository.save(collection);
         UserMission userMission = userMissionRepository.findByUserAndMissionId(user, 3L);
         userMission.setCurrent();
         userMissionRepository.save(userMission);
         missionService.missionUpdate(userMission);
+    }
+
+    public BookmarkResponseDTO.BookmarkSummaryListDTO getCollectionBookmarkList(HttpServletRequest http, Long collectionId, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._COLLECTION_NOT_FOUND));
+        Page<Bookmark> bookmarks = collectionBookmarkRepository.findAllBookmarks(collection, pageRequest);
+        BookmarkResponseDTO.BookmarkSummaryListDTO bookmarkSummaryListDTO = BookmarkConverter.toBookmarkSummaryListDTO(bookmarks);
+        return bookmarkSummaryListDTO;
     }
 
     public CollectionResponseDTO.CollectionDetailDTO getDetailCollection(HttpServletRequest http, Long collectionId) {
@@ -86,6 +105,7 @@ public class CollectionService {
         }
         collectionRepository.delete(collection);
     }
+
     @Transactional
     public void patchCollection(HttpServletRequest http, Long collectionId, CollectionRequestDTO.CollectionDTO request) {
         User user = userService.findUserByHttpServletRequest(http);
