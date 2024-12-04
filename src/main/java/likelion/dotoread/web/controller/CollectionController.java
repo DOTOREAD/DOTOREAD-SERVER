@@ -8,6 +8,7 @@ import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.code.status.SuccessStatus;
 import likelion.dotoread.api.exception.handler.UserHandler;
 import likelion.dotoread.service.CollectionService;
+import likelion.dotoread.web.dto.BookmarkDto.BookmarkResponseDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionRequestDTO;
 import likelion.dotoread.web.dto.CollectionDto.CollectionResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,13 @@ public class CollectionController {
     public ApiResponse postCollection(HttpServletRequest http, @PathVariable Long collectionId, @RequestBody CollectionRequestDTO.CollectionCreateDTO request) {
         collectionService.createCollection(http, collectionId, request);
         return ApiResponse.of(SuccessStatus._COLLECTION_CREATE_OK, null); //update로 바꾸자
+    }
+
+    @GetMapping("/collections/bookmarks/{collectionId}")
+    @Operation(summary = "글 작성용 북마크 목록 조회 api", description = "글을 작성할 때 북마크 목록을 조회하는 api입니다.")
+    public ApiResponse<BookmarkResponseDTO.BookmarkSummaryListDTO> getCollectionList(HttpServletRequest http, @PathVariable Long collectionId, @RequestParam(name = "page") Integer page) {
+        BookmarkResponseDTO.BookmarkSummaryListDTO response = collectionService.getCollectionBookmarkList(http, collectionId, page);
+        return ApiResponse.of(SuccessStatus._GET_COLLECTION_BOOKMARKS_OK, response);
     }
 
     @GetMapping("/collections/{collectionId}")

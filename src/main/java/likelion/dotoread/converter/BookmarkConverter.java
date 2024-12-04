@@ -38,6 +38,20 @@ public class BookmarkConverter {
                 .build();
     }
 
+    public static BookmarkResponseDTO.BookmarkSummaryListDTO toBookmarkSummaryListDTO(Page<Bookmark> bookmarks) {
+        List<BookmarkResponseDTO.BookmarkSummaryDTO> bookmarkSumamryDTOList = bookmarks.stream()
+                .map(BookmarkConverter::toBookmarkSummaryDTO)
+                .collect(Collectors.toList());
+        return BookmarkResponseDTO.BookmarkSummaryListDTO.builder()
+                .bookmarkSummaryDTOList(bookmarkSumamryDTOList)
+                .listSize(bookmarks.getSize())
+                .totalElements(bookmarks.getTotalElements())
+                .totalPage(bookmarks.getTotalPages())
+                .isLast(bookmarks.isLast())
+                .isFirst(bookmarks.isFirst())
+                .build();
+    }
+
     public static BookmarkResponseDTO.BookmarkSummaryDTO toBookmarkSummaryDTO(Bookmark bookmark) {
         return BookmarkResponseDTO.BookmarkSummaryDTO.builder()
                 .bookmarkId(bookmark.getId())

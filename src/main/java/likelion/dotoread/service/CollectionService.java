@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,6 +60,15 @@ public class CollectionService {
         userMission.setCurrent();
         userMissionRepository.save(userMission);
         missionService.missionUpdate(userMission);
+    }
+
+    public BookmarkResponseDTO.BookmarkSummaryListDTO getCollectionBookmarkList(HttpServletRequest http, Long collectionId, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._COLLECTION_NOT_FOUND));
+        Page<Bookmark> bookmarks = collectionBookmarkRepository.findAllBookmarks(collection, pageRequest);
+        BookmarkResponseDTO.BookmarkSummaryListDTO bookmarkSummaryListDTO = BookmarkConverter.toBookmarkSummaryListDTO(bookmarks);
+        return bookmarkSummaryListDTO;
     }
 
     public CollectionResponseDTO.CollectionDetailDTO getDetailCollection(HttpServletRequest http, Long collectionId) {

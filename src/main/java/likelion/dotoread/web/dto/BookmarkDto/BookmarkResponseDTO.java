@@ -46,4 +46,17 @@ public class BookmarkResponseDTO {
         String title;
         String url;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class BookmarkSummaryListDTO {
+        List<BookmarkSummaryDTO> bookmarkSummaryDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
 }
