@@ -50,6 +50,7 @@ public enum SuccessStatus implements BaseCode {
     _CLONE_COLLECTION_OK(HttpStatus.OK, "COLLECTION2006", "글(컬렉션) 북마크 클론 완료되었습니다."),
     _POST_COLLECTION_LIKE_OK(HttpStatus.OK, "COLLECTION2007", "글(컬렉션) 좋아요 완료되었습니다."),
     _DELETE_COLLECTION_LIKE_OK(HttpStatus.OK, "COLLECTION2008", "글(컬렉션) 좋아요 삭제가 완료되었습니다."),
+    _COLLECTION_CREATE_TEMP_OK(HttpStatus.OK, "COLLECTION2009", "임시 글 작성이 완료되었습니다."),
 
 
 

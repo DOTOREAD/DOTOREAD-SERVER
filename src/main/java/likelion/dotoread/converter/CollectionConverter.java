@@ -13,6 +13,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CollectionConverter {
+    public static Collection toTempCollection(User user, CollectionRequestDTO.CollectionTempDTO request) {
+        return Collection.builder()
+                .title(null)
+                .user(user)
+                .memo(null)
+                .build();
+    }
+
     public static Collection toCollection(User user, CollectionRequestDTO.CollectionDTO request) {
         return Collection.builder()
                 .title(request.getTitle())
@@ -20,6 +28,12 @@ public class CollectionConverter {
                 .memo(request.getMemo())
                 .build();
     }
+
+    public static void updateCollectionFromDTO(Collection collection, CollectionRequestDTO.CollectionCreateDTO request) {
+            collection.setTitle(request.getTitle());
+            collection.setMemo(request.getMemo());
+    }
+
     public static CollectionBookmark toCollectionBookmark(Collection collection, Bookmark bookmark) {
         return CollectionBookmark.builder()
                 .bookmark(bookmark)
