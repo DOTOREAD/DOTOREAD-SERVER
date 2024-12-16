@@ -30,7 +30,8 @@ public class ClassifyService {
     private final FolderRepository folderRepository;
     private final FolderService folderService;
     private final UserRepository userRepository;
-    @Value("${flask.server.url}")
+    //@Value("${flask.server.url}")
+    @Value("http://127.0.0.1:5000")
     String flaskUrl;
     private final UserService userService;
 
@@ -48,7 +49,7 @@ public class ClassifyService {
                 .map(bookmarkId -> {
                     Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                             .orElseThrow(() -> new GeneralException(ErrorStatus._BOOKMARK_NOT_FOUND));
-                    String topic = callAIClassify(bookmarkId);
+                    String topic = callAIClassify(bookmarkId, user);
                     if (topic != null) { // 폴더가 존재하지 않으면 생성하고 존재하면 바로 저장
                         Folder folder = folderService.findOrCreateFolder(topic, user);
 
@@ -70,11 +71,15 @@ public class ClassifyService {
                 .collect(Collectors.toList());
     }
 
-    private String callAIClassify(Long bookmarkId) {
+
+    private String callAIClassify(Long bookmarkId, User user) {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> requestBody = new HashMap<>();
         String url = bookmarkRepository.getUrlById(bookmarkId);
+        List<String> folders = folderRepository.findFolderNamesByUser(user);
         requestBody.put("url", url);
+        requestBody.put("folders", folders);
+        System.out.println(folders);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -83,11 +88,22 @@ public class ClassifyService {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(
-                    flaskUrl + "/keyword", HttpMethod.POST, entity, String.class);
+                    flaskUrl + "/classify", HttpMethod.POST, entity, String.class);
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(response.getBody());
-            return rootNode.path("topic").asText();
+
+            boolean isFolderCategoryNull = rootNode.path("폴더 분류").isNull() || rootNode.path("폴더 분류").asText().isEmpty();
+            boolean isNewFolderRecommendationNull = rootNode.path("새 폴더 추천").isNull() || rootNode.path("새 폴더 추천").asText().isEmpty();
+
+            if (isFolderCategoryNull && isNewFolderRecommendationNull) {
+                return null;
+            } else if (isFolderCategoryNull) {
+                return rootNode.path("새 폴더 추천").asText();
+            } else {
+                return rootNode.path("폴더 분류").asText();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
