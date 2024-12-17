@@ -30,8 +30,7 @@ public class ClassifyService {
     private final FolderRepository folderRepository;
     private final FolderService folderService;
     private final UserRepository userRepository;
-    //@Value("${flask.server.url}")
-    @Value("http://127.0.0.1:5000")
+    @Value("${flask.server.url}")
     String flaskUrl;
     private final UserService userService;
 
@@ -79,6 +78,7 @@ public class ClassifyService {
         List<String> folders = folderRepository.findFolderNamesByUser(user);
         requestBody.put("url", url);
         requestBody.put("folders", folders);
+        System.out.println(url);
         System.out.println(folders);
 
         HttpHeaders headers = new HttpHeaders();
