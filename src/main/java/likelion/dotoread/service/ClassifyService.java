@@ -3,6 +3,7 @@ package likelion.dotoread.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Bookmark;
@@ -110,8 +111,13 @@ public class ClassifyService {
         }
     }
 
+    @Transactional
     public void cancelClassify(ClassifyRequest classifyRequest) {
         bookmarkRepository.removeFolderIdsByBookmarkIds(classifyRequest.getBookmarkIds());
+        List<Long> foldersToDelete = classifyRequest.getFolderIds().stream()
+                .filter(folderId -> bookmarkRepository.countByFolderId(folderId) == 0)
+                .collect(Collectors.toList());
+        folderRepository.deleteAllByIdInBatch(foldersToDelete);
     }
 
     public void deleteClassify(Long classifyId) {
