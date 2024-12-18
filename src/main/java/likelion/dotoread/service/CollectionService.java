@@ -167,9 +167,13 @@ public class CollectionService {
         collectionRepository.save(collection);
     }
 
+//    public CollectionResponseDTO.CollectionPreviewListDTO searchCollection(String search, Integer page) {
+//        PageRequest pageRequest = PageRequest.of(page-1,10);
+//        Page<Collection> collections = collectionRepository.findByTitleContaining(search, pageRequest);
+//        return CollectionConverter.toCollectionPreviewListDTO(collections);
+//    }
     public CollectionResponseDTO.CollectionPreviewListDTO searchCollection(String search, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page-1,10);
-        Page<Collection> collections = collectionRepository.findByTitleContaining(search, pageRequest);
+        List<Collection> collections = collectionRepository.findByTitleContaining(search);
         return CollectionConverter.toCollectionPreviewListDTO(collections);
     }
 
