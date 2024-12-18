@@ -89,7 +89,7 @@ public class CollectionService {
     }
 
     public CollectionResponseDTO.CollectionPreviewListDTO getCollectionPreviewList(HttpServletRequest http, Integer page) {
-        List<Collection> collections = collectionRepository.findAll();
+        List<Collection> collections = collectionRepository.findAllByDESC();
         CollectionResponseDTO.CollectionPreviewListDTO collectionPreviewListDTO = CollectionConverter.toCollectionPreviewListDTO(collections);
         return collectionPreviewListDTO;
     }
