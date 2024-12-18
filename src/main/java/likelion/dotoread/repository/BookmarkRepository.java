@@ -55,4 +55,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     Page<Bookmark> findByUserAndTitleContaining(@Param("user") User user, @Param("search")String search, PageRequest pageRequest);
 
     List<Bookmark> findAllByIdIn(List<Long> ids);
+
+    @Query("SELECT COUNT(b) FROM Bookmark b WHERE b.folder.id = :folderId")
+    long countByFolderId(@Param("folderId") Long folderId);
 }
