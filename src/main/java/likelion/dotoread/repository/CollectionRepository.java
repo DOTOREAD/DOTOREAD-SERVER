@@ -14,4 +14,6 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
 //    Page<Collection> findByTitleContaining(@Param("search") String search, PageRequest pageRequest);
     @Query("SELECT b FROM Collection b WHERE lower(b.title) LIKE lower(concat('%', :search, '%'))")
     List<Collection> findByTitleContaining(@Param("search") String search);
+    @Query("SELECT c FROM Collection c ORDER BY c.createdAt DESC")
+    List<Collection> findAllByDESC();
 }
