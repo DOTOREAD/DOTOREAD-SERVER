@@ -6,6 +6,7 @@ import likelion.dotoread.api.code.status.ErrorStatus;
 import likelion.dotoread.api.exception.GeneralException;
 import likelion.dotoread.domain.Folder;
 import likelion.dotoread.domain.User;
+import likelion.dotoread.repository.BookmarkRepository;
 import likelion.dotoread.web.dto.FolderDto.FolderDTO;
 import likelion.dotoread.repository.FolderRepository;
 import likelion.dotoread.repository.UserRepository;
@@ -20,11 +21,13 @@ public class FolderService {
 
     private final UserRepository userRepository;
     private final FolderRepository folderRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final UserService userService;
 
-    public FolderService(UserRepository userRepository, FolderRepository folderRepository, UserService userService) {
+    public FolderService(UserRepository userRepository, FolderRepository folderRepository, BookmarkRepository bookmarkRepository, UserService userService) {
         this.userRepository = userRepository;
         this.folderRepository = folderRepository;
+        this.bookmarkRepository = bookmarkRepository;
         this.userService = userService;
     }
 
@@ -56,9 +59,11 @@ public class FolderService {
         return folderRepository.save(newFolder).getId();
     }
 
+    @Transactional
     public void deleteFolder(Long folderId) {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._FOLDER_NOT_FOUND));
+        bookmarkRepository.updateFolderIdToNullByFolderId(folderId);
         folderRepository.delete(folder);
     }
 

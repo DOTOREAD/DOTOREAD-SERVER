@@ -23,7 +23,7 @@ public class Folder extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "folder")
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
 }

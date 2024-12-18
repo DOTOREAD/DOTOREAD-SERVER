@@ -58,4 +58,8 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     @Query("SELECT COUNT(b) FROM Bookmark b WHERE b.folder.id = :folderId")
     long countByFolderId(@Param("folderId") Long folderId);
+
+    @Modifying
+    @Query("UPDATE Bookmark b SET b.folder = NULL WHERE b.folder.id = :folderId")
+    void updateFolderIdToNullByFolderId(@Param("folderId") Long folderId);
 }
