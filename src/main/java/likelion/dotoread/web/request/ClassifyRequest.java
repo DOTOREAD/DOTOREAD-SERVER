@@ -7,7 +7,6 @@ import java.util.List;
 public record ClassifyRequest(
         @NotEmpty(message = "북마크가 비어있습니다.")
         List<Long> bookmarkIds,
-        @NotEmpty(message = "폴더가 비어있습니다.")
         List<Long> folderIds
 )  {
         public List<Long> getBookmarkIds() {
