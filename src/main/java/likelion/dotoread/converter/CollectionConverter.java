@@ -66,7 +66,25 @@ public class CollectionConverter {
                 .build();
     }
 
-    public static CollectionResponseDTO.CollectionPreviewListDTO toCollectionPreviewListDTO(Page<Collection> collections) {
+//    public static CollectionResponseDTO.CollectionPreviewListDTO toCollectionPreviewListDTO(Page<Collection> collections) {
+//        List<CollectionResponseDTO.CollectionPreviewDTO> collectionPreviewDTOList = collections.stream()
+//                .map(collection -> {
+//                    List<BookmarkResponseDTO.BookmarkSummaryDTO> bookmarkSummaryDTOList = collection.getCollectionBookmarks().stream()
+//                            .map(collectionBookmark -> BookmarkConverter.toBookmarkSummaryDTO(collectionBookmark.getBookmark()))
+//                            .collect(Collectors.toList());
+//                    return toCollectionPreviewDTO(collection, bookmarkSummaryDTOList);
+//                })
+//                .collect(Collectors.toList());
+//        return CollectionResponseDTO.CollectionPreviewListDTO.builder()
+//                .collectionPreviewDTOList(collectionPreviewDTOList)
+////                .listSize(collections.getSize())
+////                .totalElements(collections.getTotalElements())
+////                .isFirst(collections.isFirst())
+////                .isLast(collections.isLast())
+////                .totalPage(collections.getTotalPages())
+//                .build();
+//    }
+    public static CollectionResponseDTO.CollectionPreviewListDTO toCollectionPreviewListDTO(List<Collection> collections) {
         List<CollectionResponseDTO.CollectionPreviewDTO> collectionPreviewDTOList = collections.stream()
                 .map(collection -> {
                     List<BookmarkResponseDTO.BookmarkSummaryDTO> bookmarkSummaryDTOList = collection.getCollectionBookmarks().stream()
@@ -77,11 +95,11 @@ public class CollectionConverter {
                 .collect(Collectors.toList());
         return CollectionResponseDTO.CollectionPreviewListDTO.builder()
                 .collectionPreviewDTOList(collectionPreviewDTOList)
-                .listSize(collections.getSize())
-                .totalElements(collections.getTotalElements())
-                .isFirst(collections.isFirst())
-                .isLast(collections.isLast())
-                .totalPage(collections.getTotalPages())
+//                    .listSize(collections.getSize())
+//                    .totalElements(collections.getTotalElements())
+//                    .isFirst(collections.isFirst())
+//                    .isLast(collections.isLast())
+//                    .totalPage(collections.getTotalPages())
                 .build();
     }
 }

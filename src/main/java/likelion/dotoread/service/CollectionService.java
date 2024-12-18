@@ -89,11 +89,16 @@ public class CollectionService {
     }
 
     public CollectionResponseDTO.CollectionPreviewListDTO getCollectionPreviewList(HttpServletRequest http, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page-1, 10);
-        Page<Collection> collections = collectionRepository.findAll(pageRequest);
+        List<Collection> collections = collectionRepository.findAll();
         CollectionResponseDTO.CollectionPreviewListDTO collectionPreviewListDTO = CollectionConverter.toCollectionPreviewListDTO(collections);
         return collectionPreviewListDTO;
     }
+//    public CollectionResponseDTO.CollectionPreviewListDTO getCollectionPreviewList(HttpServletRequest http, Integer page) {
+//        PageRequest pageRequest = PageRequest.of(page-1, 10);
+//        Page<Collection> collections = collectionRepository.findAll(pageRequest);
+//        CollectionResponseDTO.CollectionPreviewListDTO collectionPreviewListDTO = CollectionConverter.toCollectionPreviewListDTO(collections);
+//        return collectionPreviewListDTO;
+//    }
 
     public void deleteCollection(HttpServletRequest http, Long collectionId) {
         User user = userService.findUserByHttpServletRequest(http);
