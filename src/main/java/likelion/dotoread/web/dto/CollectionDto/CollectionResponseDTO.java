@@ -16,11 +16,11 @@ public class CollectionResponseDTO {
     @Builder
     public static class CollectionPreviewListDTO {
         List<CollectionPreviewDTO> collectionPreviewDTOList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
+//        Integer listSize;
+//        Integer totalPage;
+//        Long totalElements;
+//        Boolean isFirst;
+//        Boolean isLast;
     }
 
     @Getter
